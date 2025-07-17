@@ -3,10 +3,7 @@ import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
 import { LinkUtil } from '../utils/link';
 import { type CollectionEntry } from 'astro:content';
 import { BaseDoc } from './BaseDoc';
-import { courseRepo } from '../repos/CourseRepo';
-
-export const COLLECTION_COURSE = 'courses' as const;
-export type CourseEntry = CollectionEntry<typeof COLLECTION_COURSE>;
+import { courseRepo, type CourseEntry } from '../repos/CourseRepo';
 
 /**
  * 课程文档类，配合 CourseRepo 使用

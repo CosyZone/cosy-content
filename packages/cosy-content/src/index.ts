@@ -5,6 +5,8 @@ export * from './repos/LessonRepo';
 export * from './repos/MetaRepo';
 export * from './repos/CourseRepo';
 
+export * from './entities/BaseDoc';
+export * from './entities/CourseDoc';
 export * from './entities/BlogDoc';
 export * from './entities/ExperimentDoc';
 export * from './entities/LessonDoc';
