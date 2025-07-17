@@ -1,9 +1,12 @@
-name: Publish
+name: Publish Cosy Content
 
 on:
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/publish-content.yaml'
+      - 'packages/cosy-content/**'
 
 jobs:
   build-and-publish:
@@ -35,7 +38,8 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Build
-        run: pnpm build
+        run: |
+          pnpm run build
 
       - name: Bump version
         id: version
@@ -62,15 +66,15 @@ jobs:
           git pull
           git add package.json
           git commit -m "🎨 Chore: bump version to ${{ steps.version.outputs.new_version }}"
-          git tag "v${{ steps.version.outputs.new_version }}"
+          git tag "cosy-content/v${{ steps.version.outputs.new_version }}"
           git push
           git push --tags
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.version.outputs.new_version }}'
-          name: 'v${{ steps.version.outputs.new_version }}'
+          tag_name: 'cosy-content/v${{ steps.version.outputs.new_version }}'
+          name: 'cosy-content v${{ steps.version.outputs.new_version }}'
           body: |
             ## @coffic/cosy-content v${{ steps.version.outputs.new_version }}
 
