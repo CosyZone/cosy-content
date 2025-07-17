@@ -1,91 +1,15 @@
 {
-  "name": "@coffic/cosy-content",
-  "version": "0.1.0",
-  "description": "Cosy Content",
-  "author": {
-    "name": "nookery",
-    "url": "https://github.com/nookery"
-  },
-  "repository": {
-    "url": "https://github.com/CosyZone/cosy"
-  },
-  "license": "MIT",
-  "keywords": [
-    "astro-integration",
-    "astro-component",
-    "withastro",
-    "astro",
-    "cosy-ui"
+  "workspaces": [
+    "packages/*"
   ],
-  "homepage": "https://cofficlab.github.io/cosy-ui/en/",
-  "publishConfig": {
-    "access": "public"
-  },
-  "sideEffects": false,
-  "main": "./dist/index.ts",
-  "module": "./dist/index.ts",
-  "types": "./dist/index.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.ts",
-      "types": "./dist/index.ts"
-    }
-  },
-  "files": [
-    "dist",
-    "index.ts"
-  ],
-  "scripts": {
-    "dev": "astro dev --host 0.0.0.0 --port 6688",
-    "build": "tsc"
-  },
   "type": "module",
-  "peerDependencies": {
-    "astro": "^5.1.3"
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter example dev"
   },
-  "peerDependenciesMeta": {
-    "astro": {
-      "optional": true
-    },
-    "vue": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "@remixicon/vue": "^4.6.0",
-    "astro-integration-kit": "^0.18.0",
-    "fs-extra": "^11.3.0",
-    "html-to-image": "^1.11.13",
-    "shiki": "^3.7.0"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.2.6",
-    "@astrojs/ts-plugin": "^1.10.4",
-    "@eslint/js": "^9.27.0",
-    "@tailwindcss/typography": "^0.5.16",
-    "@tailwindcss/vite": "^4.1.7",
-    "@tsconfig/node22": "^22.0.2",
-    "@types/chai": "^5.2.2",
-    "@types/eslint": "^9.6.1",
-    "@types/fs-extra": "^11.0.4",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^22.15.19",
-    "@types/react": "^19.1.4",
-    "@typescript-eslint/parser": "^8.32.1",
-    "astro": "^5.7.13",
-    "chai": "^4.5.0",
-    "eslint": "^9.27.0",
-    "eslint-plugin-astro": "^1.3.1",
-    "globals": "^16.1.0",
-    "mocha": "^10.8.2",
-    "prettier": "^3.5.3",
-    "prettier-plugin-astro": "^0.14.1",
-    "rollup-plugin-copy": "^3.5.0",
-    "sharp": "^0.33.5",
-    "tsx": "^4.19.4",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1",
-    "vite": "^6.3.5"
+  "packageManager": "pnpm@10.12.1",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }

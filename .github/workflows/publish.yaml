@@ -40,6 +40,7 @@ jobs:
       - name: Bump version
         id: version
         run: |
+          cd packages/cosy-content
           # 获取当前版本号
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           # 直接用Node.js脚本修改版本号
@@ -81,6 +82,8 @@ jobs:
           prerelease: false
 
       - name: Publish to npm
-        run: pnpm publish --no-git-checks --access public
+        run: |
+          cd packages/cosy-content
+          pnpm publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
