@@ -1,0 +1,59 @@
+---
+import AppLayout from '@/layouts/AppLayout.astro';
+import { CardCourse, Hero, Grid, Container } from '@coffic/cosy-ui';
+import { courseRepo } from '@coffic/cosy-content';
+
+// 这里定义了每个语言的首页，并将其作为静态页面预渲染。
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+    return [
+        {
+            params: {
+                lang: '/zh-cn',
+            },
+        },
+        {
+            params: {
+                lang: '/en',
+            },
+        },
+    ];
+}
+
+const { lang } = Astro.params;
+
+const title = lang === 'zh-cn' ? '快易知' : 'Quick Knowledge';
+const description =
+    lang === 'zh-cn' ? '追寻知识的纯粹之光' : 'Pursuing the Pure Light of Knowledge';
+
+// Hero section data
+const name: Record<'zh-cn' | 'en', string> = {
+    'zh-cn': '快易知',
+    en: 'Kuai Yi Zhi',
+};
+
+const heroText: Record<'zh-cn' | 'en', string> = {
+    'zh-cn': '沉浸式学习平台，帮您构建完整的知识网络',
+    en: 'Immersive Learning Platform, Help You Build a Complete Knowledge Network',
+};
+
+const courses = await courseRepo.getFamousCourses(lang);
+---
+
+<AppLayout title={title} description={description} verticalPadding="none" showSidebar={false}>
+    <div>
+        <Hero title={'快易知'} description={'沉浸式学习平台，帮您构建完整的知识网络'} links={[]}>
+            <Container padding="xl" size="xl" slot="app">
+                <Grid cols={4} gap="xs">
+                    {
+                        courses.map(course => (
+                            <CardCourse title={course.getTitle()} link={course.getLink()} />
+                        ))
+                    }
+                </Grid>
+            </Container>
+        </Hero>
+    </div>
+</AppLayout>

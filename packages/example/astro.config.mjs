@@ -1,5 +1,16 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
+import path from 'path';
 
 // https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  adapter: node({ mode: 'standalone' }),
+  vite: {
+    resolve: {
+      alias: {
+        '@': path.resolve('./src'),
+      },
+    },
+  },
+});

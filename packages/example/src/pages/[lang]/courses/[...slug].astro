@@ -1,0 +1,60 @@
+---
+import AppLayout from '@/layouts/AppLayout.astro';
+import { Error404, defaultLogger, type ISidebarItem } from '@coffic/cosy-ui';
+import { courseRepo } from '@coffic/cosy-content';
+import type { RenderResult } from 'astro:content';
+
+const { lang, slug } = Astro.params;
+const doc = await courseRepo.find(`${lang}/${slug}`);
+let title = '';
+let renderResult: RenderResult | null = null;
+let sidebarItems: ISidebarItem | null = null;
+
+if (doc) {
+    title = doc.getTitle();
+    renderResult = await doc.render();
+
+    // 获取顶级文档
+    const topDoc = await doc.getAncestor(2);
+    if (topDoc) {
+        sidebarItems = await topDoc.toSidebarItem();
+    }
+} else {
+    title = '404 Not Found';
+}
+
+export const getStaticPaths = async () => {
+    const paths = await courseRepo.getStaticPaths();
+    const debug = false;
+
+    if (debug) {
+        defaultLogger.info(paths);
+    }
+
+    // 过滤掉 slug 为空的路径
+    return paths.filter(path => {
+        const slug = path.params.slug;
+        return slug && slug.length > 0;
+    });
+};
+---
+
+<AppLayout
+    title={title}
+    description={title}
+    sidebar={sidebarItems}
+    showSidebar={true}
+    isArticle={true}
+    showTableOfContents={true}
+    layout="row">
+    {
+        renderResult ? (
+            <>
+                <h1>{title}</h1>
+                <renderResult.Content />
+            </>
+        ) : (
+            <Error404 debugKVs={{ slug }} />
+        )
+    }
+</AppLayout>

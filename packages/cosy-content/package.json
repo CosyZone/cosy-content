@@ -51,6 +51,7 @@
     }
   },
   "dependencies": {
+    "@astrojs/node": "^9.3.0",
     "@remixicon/vue": "^4.6.0",
     "astro-integration-kit": "^0.18.0",
     "fs-extra": "^11.3.0",

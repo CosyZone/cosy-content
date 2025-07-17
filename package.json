@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r build",
+    "build:content": "pnpm --filter @coffic/cosy-content build",
+    "build:example": "pnpm --filter example build",
     "dev": "pnpm --filter example dev"
   },
   "packageManager": "pnpm@10.12.1",

@@ -1,0 +1,13 @@
+---
+import AppLayout from '@/layouts/AppLayout.astro';
+import { Error404, Container } from '@coffic/cosy-ui';
+---
+
+<AppLayout
+    title="404 - Page Not Found"
+    description="The page you're looking for doesn't exist"
+    verticalPadding="2xl">
+    <Container padding="xl" size="full">
+        <Error404 />
+    </Container>
+</AppLayout>
