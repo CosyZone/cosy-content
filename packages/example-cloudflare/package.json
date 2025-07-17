@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "example-cloudflare",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,10 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^9.3.0",
+    "@astrojs/cloudflare": "^12.6.0",
     "@coffic/cosy-content": "workspace:*",
-    "@coffic/cosy-ui": "^0.9.0",
-    "astro": "^5.12.0",
-    "sharp": "^0.33.5"
+    "astro": "^5.12.0"
   }
 }
