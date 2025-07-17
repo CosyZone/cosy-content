@@ -1,15 +1,49 @@
-import type { ExperimentEntry } from '../repos/ExperimentRepo';
-import { experimentRepo } from '../repos/ExperimentRepo';
-import { cosyLogger } from '../../cosy';
+import type { LessonEntry } from '../repos/LessonRepo';
+import { lessonRepo } from '../repos/LessonRepo';
+import { cosyLogger } from '../cosy';
 import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { LinkUtil } from '../../utils/link';
-import type { IHeadingType } from '../../types/heading';
+import { LinkUtil } from '../utils/link';
+import type { IHeadingType } from '../types/heading';
 import { BaseDoc } from './BaseDoc';
 
-export default class ExperimentDoc extends BaseDoc implements SidebarProvider {
-  entry: ExperimentEntry;
+/**
+ * 课程文档类，配合 LessonRepo 使用
+ *
+ * 目录结构：
+ * ```
+ * lessons/
+ * ├── build_your_own_web_toolbox/      # 课程目录
+ * │   ├── images/                      # 课程图片资源
+ * │   ├── components/                  # 课程组件
+ * │   ├── en/                          # 英文版本
+ * │   │   ├── index.mdx                # 课程首页
+ * │   │   ├── 1.mdx                    # 第一章
+ * │   │   └── 2.mdx                    # 第二章
+ * │   └── zh-cn/                       # 中文版本
+ * │       ├── index.mdx                # 课程首页
+ * │       ├── 1.mdx                    # 第一章
+ * │       └── 2.mdx                    # 第二章
+ * └── learn_astro/                     # 另一个课程
+ *     ├── en/
+ *     │   ├── index.mdx
+ *     │   ├── 1.mdx
+ *     │   └── 2.mdx
+ *     └── zh-cn/
+ *         ├── index.mdx
+ *         ├── 1.mdx
+ *         └── 2.mdx
+ * ```
+ *
+ * 说明：
+ * - 每个课程（如 build_your_own_web_toolbox）是一个独立的目录
+ * - 课程目录可以包含多语言版本（en, zh-cn 等）
+ * - 每个语言版本包含完整的课程内容
+ * - 课程目录可以作为 git 子模块独立管理
+ */
+export default class LessonDoc extends BaseDoc implements SidebarProvider {
+  entry: LessonEntry;
 
-  constructor(entry: ExperimentEntry) {
+  constructor(entry: LessonEntry) {
     super();
     this.entry = entry;
   }
@@ -66,7 +100,7 @@ export default class ExperimentDoc extends BaseDoc implements SidebarProvider {
     return this.getAncestorId(2);
   }
 
-  override getLang(): string {
+  getLang(): string {
     const debug = false;
     const parts = this.entry.id.split('/');
     const lang = parts[1];
@@ -88,15 +122,15 @@ export default class ExperimentDoc extends BaseDoc implements SidebarProvider {
     return this.getTopDocId();
   }
 
-  async getBook(): Promise<ExperimentDoc | null> {
+  async getBook(): Promise<LessonDoc | null> {
     const bookId = await this.getBookId();
-    return await experimentRepo.find(bookId);
+    return await lessonRepo.find(bookId);
   }
 
   getLink(): string {
     const debug = false;
     const lang = this.getLang();
-    const link = LinkUtil.getExperimentLink(lang, this.getId());
+    const link = LinkUtil.getLessonLink(lang, this.getId());
     if (debug) {
       cosyLogger.info(`获取 ${this.entry.id} 的链接: ${link}`);
     }
@@ -119,17 +153,17 @@ export default class ExperimentDoc extends BaseDoc implements SidebarProvider {
     return (this.entry.rendered?.metadata?.headings as IHeadingType[]) || [];
   }
 
-  async getTopDoc(): Promise<ExperimentDoc | null> {
+  async getTopDoc(): Promise<LessonDoc | null> {
     const bookId = await this.getBookId();
-    return await experimentRepo.find(bookId);
+    return await lessonRepo.find(bookId);
   }
 
-  async getChildren(): Promise<ExperimentDoc[]> {
-    return await experimentRepo.getChildren(this.entry.id);
+  async getChildren(): Promise<LessonDoc[]> {
+    return await lessonRepo.getChildren(this.entry.id);
   }
 
-  async getDescendants(): Promise<ExperimentDoc[]> {
-    return await experimentRepo.getDescendantDocs(this.entry.id);
+  async getDescendants(): Promise<LessonDoc[]> {
+    return await lessonRepo.getDescendantDocs(this.entry.id);
   }
 
   async toSidebarItem(): Promise<SidebarItemEntity> {

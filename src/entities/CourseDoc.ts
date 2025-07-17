@@ -1,6 +1,6 @@
-import { cosyLogger } from '../../cosy';
+import { cosyLogger } from '../cosy';
 import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { LinkUtil } from '../../utils/link';
+import { LinkUtil } from '../utils/link';
 import { type CollectionEntry } from 'astro:content';
 import { BaseDoc } from './BaseDoc';
 import { courseRepo } from '../repos/CourseRepo';

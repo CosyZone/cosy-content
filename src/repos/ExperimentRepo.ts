@@ -1,7 +1,7 @@
 import { defineCollection, z, type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo';
 import ExperimentDoc from '../entities/ExperimentDoc';
-import { cosyLogger } from '../../cosy';
+import { cosyLogger } from '../cosy';
 import { glob } from 'astro/loaders';
 
 export const COLLECTION_EXPERIMENT = 'experiments' as const;

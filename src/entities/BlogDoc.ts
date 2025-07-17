@@ -1,8 +1,8 @@
-import { LinkUtil } from '../../utils/link';
+import { LinkUtil } from '../utils/link';
 import Tag from './Tag';
 import { blogRepo, type BlogEntry } from '..';
 import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { cosyLogger, ERROR_PREFIX } from '../../cosy';
+import { cosyLogger, ERROR_PREFIX } from '../cosy';
 import { BaseDoc } from './BaseDoc';
 
 /**

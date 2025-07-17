@@ -1,4 +1,4 @@
-import { type ISidebarItem } from '../../types/sidebar';
+import { type ISidebarItem } from '../types/sidebar';
 
 /**
  * 侧边栏提供者接口

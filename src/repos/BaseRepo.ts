@@ -3,7 +3,7 @@ import {
     getEntry,
     type CollectionEntry,
 } from 'astro:content';
-import { cosyLogger, ERROR_PREFIX } from '../../cosy';
+import { cosyLogger, ERROR_PREFIX } from '../cosy';
 import type { BaseDoc } from '../entities/BaseDoc';
 
 /**

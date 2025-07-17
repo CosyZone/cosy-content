@@ -1,8 +1,8 @@
 import type { MetaEntry } from '../repos/MetaRepo';
-import { LinkUtil } from '../../utils/link';
+import { LinkUtil } from '../utils/link';
 import { metaRepo } from '../repos/MetaRepo';
 import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { cosyLogger } from '../../cosy';
+import { cosyLogger } from '../cosy';
 import { BaseDoc } from './BaseDoc';
 
 export default class MetaDoc extends BaseDoc implements SidebarProvider {
