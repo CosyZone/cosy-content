@@ -1,0 +1,77 @@
+---
+import { AppLayout as CosyLayout, LanguageUtil, type ISidebarItem } from '@coffic/cosy-ui';
+import { ProductConfig } from '@/config/config.products';
+import { AppConfig } from '@/config/config.app';
+import { FriendsConfig } from '@/config/config.friends';
+
+interface Props {
+    title: string;
+    description: string;
+    isArticle?: boolean;
+    sidebar?: ISidebarItem | null | undefined;
+    verticalPadding?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
+    showSidebar?: boolean;
+    showTableOfContents?: boolean;
+    layout?: 'column' | 'row';
+}
+
+const {
+    title,
+    description,
+    isArticle = false,
+    sidebar,
+    verticalPadding = '5xl',
+    showSidebar = true,
+    layout = 'column',
+    showTableOfContents = false,
+} = Astro.props as Props;
+
+const lang = LanguageUtil.getCurrentLanguage(Astro);
+---
+
+<CosyLayout
+    debug={false}
+    showHeader={true}
+    showSidebar={showSidebar}
+    showFooter={true}
+    metaConfig={{
+        title: title,
+        description: description,
+        siteName: AppConfig.siteName,
+        keywords: AppConfig.keywords,
+        author: AppConfig.companyName.get(lang),
+        robots: 'index, follow',
+    }}
+    footerConfig={{
+        socialLinks: ['https://github.com/CofficLab'],
+        company: AppConfig.companyName.get(lang),
+        copyright: AppConfig.siteName,
+        homeLink: '',
+        inspirationalSlogan: '',
+        siteName: AppConfig.siteName,
+        slogan: AppConfig.slogan.get(lang),
+        aboutLink: AppConfig.getLink(lang, 'meta/about'),
+        contactLink: AppConfig.getLink(lang, 'meta/advice'),
+        blogLink: AppConfig.getLink(lang, 'blogs'),
+        termsLink: AppConfig.getLink(lang, 'meta/terms'),
+        privacyLink: AppConfig.getLink(lang, 'meta/privacy'),
+        techStackLink: AppConfig.getLink(lang, 'meta/tech-stack'),
+        products: ProductConfig.products,
+        friendlyLinks: FriendsConfig.friends,
+    }}
+    mainContentConfig={{
+        size: 'full',
+        isArticle: isArticle,
+        layout: layout,
+        verticalPadding: verticalPadding,
+        showTableOfContents: showTableOfContents,
+    }}
+    sidebarConfig={{
+        sidebarItems: sidebar ? [sidebar] : [],
+    }}
+    headerConfig={{
+        navItems: AppConfig.getNavItems(lang)
+    }}>
+
+    <slot />
+</CosyLayout>

@@ -11,6 +11,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",
     "@coffic/cosy-content": "workspace:*",
+    "@coffic/cosy-ui": "^0.9.6",
     "astro": "^5.12.0"
   }
 }
