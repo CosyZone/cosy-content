@@ -58,6 +58,7 @@ jobs:
 
       - name: Commit changes
         run: |
+          cd packages/cosy-content
           git pull
           git add package.json
           git commit -m "🎨 Chore: bump version to ${{ steps.version.outputs.new_version }}"
