@@ -1,4 +1,5 @@
 {
+    "extends": "astro/tsconfigs/strict",
     "compilerOptions": {
         "outDir": "dist",
         "declaration": true,
@@ -18,7 +19,8 @@
         ]
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        ".astro/types.d.ts"
     ],
     "exclude": [
         "dist",
