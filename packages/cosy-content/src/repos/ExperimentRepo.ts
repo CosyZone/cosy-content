@@ -1,8 +1,7 @@
-import { defineCollection, z, type CollectionEntry } from 'astro:content';
+import { type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
 import ExperimentDoc from '../entities/ExperimentDoc.js';
 import { cosyLogger } from '../cosy.js';
-import { glob } from 'astro/loaders';
 
 export const COLLECTION_EXPERIMENT = 'experiments' as const;
 export type ExperimentEntry = CollectionEntry<typeof COLLECTION_EXPERIMENT>;
@@ -101,20 +100,6 @@ class ExperimentRepo extends BaseDB<
 
         return paths;
     }
-
-    makeExperimentCollection = (base: string) => {
-        return defineCollection({
-            loader: glob({
-                pattern: '**/*.{md,mdx}',
-                base,
-            }),
-            schema: z.object({
-                title: z.string().optional(),
-                description: z.string().optional(),
-                pubDate: z.date().optional(),
-            }),
-        });
-    };
 }
 
 // 创建并导出单例实例

@@ -1,8 +1,7 @@
-import { defineCollection, z, type CollectionEntry } from 'astro:content';
+import { type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
 import LessonDoc from '../entities/LessonDoc.js';
 import { cosyLogger } from '../cosy.js';
-import { glob } from 'astro/loaders';
 
 export const COLLECTION_LESSON = 'lessons' as const;
 export type LessonEntry = CollectionEntry<typeof COLLECTION_LESSON>;
@@ -101,27 +100,6 @@ class LessonRepo extends BaseDB<
 
         return paths;
     }
-
-    makeLessonCollection = (base: string) => {
-        return defineCollection({
-            loader: glob({
-                pattern: '**/*.{md,mdx}',
-                base,
-            }),
-            schema: z.object({
-                title: z.string().optional(),
-                description: z.string().optional(),
-                authors: z
-                    .array(
-                        z.object({
-                            name: z.string(),
-                            picture: z.string().optional(),
-                        })
-                    )
-                    .optional(),
-            }),
-        });
-    };
 }
 
 // 创建并导出单例实例

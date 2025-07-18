@@ -1,8 +1,7 @@
 import MetaDoc from '../entities/MetaDoc.js';
 import { cosyLogger } from '../cosy.js';
-import { defineCollection, z, type CollectionEntry } from 'astro:content';
+import { type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
-import { glob } from 'astro/loaders';
 
 export const COLLECTION_META = 'meta' as const;
 export type MetaEntry = CollectionEntry<typeof COLLECTION_META>;
@@ -69,20 +68,6 @@ class MetaRepo extends BaseDB<typeof COLLECTION_META, MetaEntry, MetaDoc> {
 
         return paths;
     }
-
-    makeMetaCollection = (base: string) => {
-        return defineCollection({
-            loader: glob({
-                pattern: '**/*.{md,mdx}',
-                base,
-            }),
-            schema: z.object({
-                title: z.string().optional(),
-                description: z.string().optional(),
-            }),
-        });
-    };
-
 }
 
 // 创建并导出单例实例

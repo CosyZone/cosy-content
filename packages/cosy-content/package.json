@@ -31,6 +31,11 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./schema": {
+      "import": "./dist/schema.js",
+      "require": "./dist/schema.js",
+      "types": "./dist/schema.d.ts"
+    },
     "./repos/*": {
       "import": "./dist/repos/*.js",
       "require": "./dist/repos/*.js",

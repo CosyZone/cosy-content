@@ -1,9 +1,8 @@
 import BlogDoc from '../entities/BlogDoc.js';
 import type Tag from '../entities/Tag.js';
 import { cosyLogger } from '../cosy.js';
-import { defineCollection, z, type CollectionEntry } from 'astro:content';
+import { type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
-import { glob } from 'astro/loaders';
 
 export const COLLECTION_BLOG = 'blogs' as const;
 export type BlogEntry = CollectionEntry<typeof COLLECTION_BLOG>;
@@ -193,33 +192,6 @@ class BlogRepo extends BaseDB<typeof COLLECTION_BLOG, BlogEntry, BlogDoc> {
 
         return paths;
     }
-
-    makeBlogCollection = (base: string) => {
-        return defineCollection({
-            loader: glob({
-                pattern: '**/*.{md,mdx}',
-                base,
-            }),
-            schema: z.object({
-                title: z.string(),
-                description: z.string().optional(),
-                tags: z.array(z.string()).optional(),
-                date: z.date().optional(),
-                draft: z.boolean().optional(),
-                hidden: z.boolean().optional(),
-                famous: z.boolean().optional(),
-                authors: z
-                    .array(
-                        z.object({
-                            name: z.string(),
-                            picture: z.string().optional(),
-                            url: z.string().optional(),
-                        })
-                    )
-                    .optional(),
-            }),
-        });
-    };
 }
 
 // 创建并导出单例实例

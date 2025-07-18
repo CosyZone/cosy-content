@@ -1,9 +1,9 @@
-import { blogRepo, courseRepo, experimentRepo, lessonRepo, metaRepo } from "@coffic/cosy-content";
+import { makeBlogCollection, makeMetaCollection, makeCourseCollection, makeLessonCollection, makeExperimentCollection } from "@coffic/cosy-content/schema";
 
 export const collections = {
-    blogs: blogRepo.makeBlogCollection('./content/blogs'),
-    meta: metaRepo.makeMetaCollection('./content/meta'),
-    courses: courseRepo.makeCourseCollection('./content/courses'),
-    lessons: lessonRepo.makeLessonCollection('./content/lessons'),
-    experiments: experimentRepo.makeExperimentCollection('./content/experiments'),
+    blogs: makeBlogCollection('./content/blogs'),
+    meta: makeMetaCollection('./content/meta'),
+    courses: makeCourseCollection('./content/courses'),
+    lessons: makeLessonCollection('./content/lessons'),
+    experiments: makeExperimentCollection('./content/experiments'),
 };

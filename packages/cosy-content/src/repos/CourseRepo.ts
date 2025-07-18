@@ -1,7 +1,6 @@
 import CourseDoc from '../entities/CourseDoc.js';
-import { defineCollection, getCollection, z, type CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
-import { glob } from 'astro/loaders';
 
 export const COLLECTION_COURSE = 'courses' as const;
 export type CourseEntry = CollectionEntry<typeof COLLECTION_COURSE>;
@@ -100,37 +99,6 @@ class CourseRepo extends BaseDB<
         return (await this.allCoursesByLang(lang))
             .filter((course) => course.hasTag(tag));
     }
-
-    makeCourseCollection = (base: string) => {
-        return defineCollection({
-            loader: glob({
-                pattern: '**/*.{md,mdx}',
-                base,
-            }),
-            schema: z.object({
-                title: z.string().optional(),
-                description: z.string().optional(),
-                folder: z.boolean().optional(),
-                authors: z
-                    .array(
-                        z.object({
-                            name: z.string(),
-                            picture: z.string().optional(),
-                            url: z.string().optional(),
-                        })
-                    )
-                    .optional(),
-                date: z.date().optional(),
-                order: z.number().optional(),
-                badge: z.string().optional(),
-                draft: z.boolean().optional(),
-                hidden: z.boolean().optional(),
-                famous: z.boolean().optional(),
-                tags: z.array(z.string()).optional(),
-                category: z.string().optional(),
-            }),
-        });
-    };
 }
 
 // 创建并导出单例实例
