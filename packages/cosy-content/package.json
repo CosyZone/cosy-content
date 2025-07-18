@@ -1,6 +1,6 @@
 {
   "name": "@coffic/cosy-content",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Cosy Content",
   "author": {
     "name": "nookery",
@@ -30,6 +30,16 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./repos/*": {
+      "import": "./dist/repos/*.js",
+      "require": "./dist/repos/*.js",
+      "types": "./dist/repos/*.d.ts"
+    },
+    "./entities/*": {
+      "import": "./dist/entities/*.js",
+      "require": "./dist/entities/*.js",
+      "types": "./dist/entities/*.d.ts"
     }
   },
   "files": [

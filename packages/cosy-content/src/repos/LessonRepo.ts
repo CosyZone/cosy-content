@@ -1,7 +1,7 @@
 import { defineCollection, z, type CollectionEntry } from 'astro:content';
-import { BaseDB } from './BaseRepo';
-import LessonDoc from '../entities/LessonDoc';
-import { cosyLogger } from '../cosy';
+import { BaseDB } from './BaseRepo.js';
+import LessonDoc from '../entities/LessonDoc.js';
+import { cosyLogger } from '../cosy.js';
 import { glob } from 'astro/loaders';
 
 export const COLLECTION_LESSON = 'lessons' as const;

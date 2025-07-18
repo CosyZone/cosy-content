@@ -1,8 +1,8 @@
-import BlogDoc from '../entities/BlogDoc';
-import type Tag from '../entities/Tag';
-import { cosyLogger } from '../cosy';
+import BlogDoc from '../entities/BlogDoc.js';
+import type Tag from '../entities/Tag.js';
+import { cosyLogger } from '../cosy.js';
 import { defineCollection, z, type CollectionEntry } from 'astro:content';
-import { BaseDB } from './BaseRepo';
+import { BaseDB } from './BaseRepo.js';
 import { glob } from 'astro/loaders';
 
 export const COLLECTION_BLOG = 'blogs' as const;

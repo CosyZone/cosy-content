@@ -1,9 +1,9 @@
-import { LinkUtil } from '../utils/link';
-import Tag from './Tag';
-import { blogRepo, type BlogEntry } from '../repos/BlogRepo';
-import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { cosyLogger, ERROR_PREFIX } from '../cosy';
-import { BaseDoc } from './BaseDoc';
+import { LinkUtil } from '../utils/link.js';
+import Tag from './Tag.js';
+import { blogRepo, type BlogEntry } from '../repos/BlogRepo.js';
+import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
+import { cosyLogger, ERROR_PREFIX } from '../cosy.js';
+import { BaseDoc } from './BaseDoc.js';
 
 /**
  * 博客文档类，配合 BlogRepo 使用

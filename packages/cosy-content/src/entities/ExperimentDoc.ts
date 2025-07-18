@@ -1,10 +1,10 @@
-import type { ExperimentEntry } from '../repos/ExperimentRepo';
-import { experimentRepo } from '../repos/ExperimentRepo';
-import { cosyLogger } from '../cosy';
-import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { LinkUtil } from '../utils/link';
-import type { IHeadingType } from '../types/heading';
-import { BaseDoc } from './BaseDoc';
+import type { ExperimentEntry } from '../repos/ExperimentRepo.js';
+import { experimentRepo } from '../repos/ExperimentRepo.js';
+import { cosyLogger } from '../cosy.js';
+import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
+import { LinkUtil } from '../utils/link.js';
+import type { IHeadingType } from '../types/heading.js';
+import { BaseDoc } from './BaseDoc.js';
 
 export default class ExperimentDoc extends BaseDoc implements SidebarProvider {
   entry: ExperimentEntry;

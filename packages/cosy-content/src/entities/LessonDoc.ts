@@ -1,10 +1,10 @@
-import type { LessonEntry } from '../repos/LessonRepo';
-import { lessonRepo } from '../repos/LessonRepo';
-import { cosyLogger } from '../cosy';
-import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { LinkUtil } from '../utils/link';
-import type { IHeadingType } from '../types/heading';
-import { BaseDoc } from './BaseDoc';
+import type { LessonEntry } from '../repos/LessonRepo.js';
+import { lessonRepo } from '../repos/LessonRepo.js';
+import { cosyLogger } from '../cosy.js';
+import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
+import { LinkUtil } from '../utils/link.js';
+import type { IHeadingType } from '../types/heading.js';
+import { BaseDoc } from './BaseDoc.js';
 
 /**
  * 课程文档类，配合 LessonRepo 使用

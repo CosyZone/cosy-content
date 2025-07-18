@@ -1,7 +1,7 @@
-import MetaDoc from '../entities/MetaDoc';
-import { cosyLogger } from '../cosy';
+import MetaDoc from '../entities/MetaDoc.js';
+import { cosyLogger } from '../cosy.js';
 import { defineCollection, z, type CollectionEntry } from 'astro:content';
-import { BaseDB } from './BaseRepo';
+import { BaseDB } from './BaseRepo.js';
 import { glob } from 'astro/loaders';
 
 export const COLLECTION_META = 'meta' as const;

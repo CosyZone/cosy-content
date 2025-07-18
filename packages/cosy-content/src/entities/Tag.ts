@@ -1,7 +1,7 @@
-import { blogRepo } from '../repos/BlogRepo';
-import { SidebarItemEntity } from './SidebarItem';
-import { type ITagStaticPath } from '../types/static-path';
-import { LinkUtil } from '../utils/link';
+import { blogRepo } from '../repos/BlogRepo.js';
+import { SidebarItemEntity } from './SidebarItem.js';
+import { type ITagStaticPath } from '../types/static-path.js';
+import { LinkUtil } from '../utils/link.js';
 
 export class Tag {
   name: string;

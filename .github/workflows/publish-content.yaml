@@ -73,7 +73,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: 'cosy-content/v${{ steps.version.outputs.new_version }}'
+          tag_name: 'v${{ steps.version.outputs.new_version }}'
           name: 'cosy-content v${{ steps.version.outputs.new_version }}'
           body: |
             ## @coffic/cosy-content v${{ steps.version.outputs.new_version }}

@@ -1,9 +1,9 @@
-import type { MetaEntry } from '../repos/MetaRepo';
-import { LinkUtil } from '../utils/link';
-import { metaRepo } from '../repos/MetaRepo';
-import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { cosyLogger } from '../cosy';
-import { BaseDoc } from './BaseDoc';
+import type { MetaEntry } from '../repos/MetaRepo.js';
+import { LinkUtil } from '../utils/link.js';
+import { metaRepo } from '../repos/MetaRepo.js';
+import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
+import { cosyLogger } from '../cosy.js';
+import { BaseDoc } from './BaseDoc.js';
 
 export default class MetaDoc extends BaseDoc implements SidebarProvider {
   entry: MetaEntry;

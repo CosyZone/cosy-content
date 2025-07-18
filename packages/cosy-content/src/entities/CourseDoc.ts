@@ -1,9 +1,9 @@
-import { cosyLogger } from '../cosy';
-import { SidebarItemEntity, type SidebarProvider } from './SidebarItem';
-import { LinkUtil } from '../utils/link';
+import { cosyLogger } from '../cosy.js';
+import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
+import { LinkUtil } from '../utils/link.js';
 import { type CollectionEntry } from 'astro:content';
-import { BaseDoc } from './BaseDoc';
-import { courseRepo, type CourseEntry } from '../repos/CourseRepo';
+import { BaseDoc } from './BaseDoc.js';
+import { courseRepo, type CourseEntry } from '../repos/CourseRepo.js';
 
 /**
  * 课程文档类，配合 CourseRepo 使用
