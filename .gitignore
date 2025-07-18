@@ -12,3 +12,5 @@ pnpm-debug.log*
 dist/*
 dist-docs
 example/dist/*packages/*/dist/* packages/*/.astro/*
+
+**/dist/*

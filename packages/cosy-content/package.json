@@ -24,7 +24,6 @@
   "sideEffects": false,
   "main": "./src/index.ts",
   "module": "./src/index.ts",
-  "types": "./src/index.d.ts",
   "exports": {
     ".": {
       "import": "./src/index.ts",
@@ -35,8 +34,7 @@
     "src"
   ],
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0 --port 6688",
-    "build": "astro build"
+    "build": "echo 'no need to build'"
   },
   "type": "module",
   "peerDependencies": {
