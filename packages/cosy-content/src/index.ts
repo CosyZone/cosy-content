@@ -11,3 +11,4 @@ export * from './entities/BlogDoc.js';
 export * from './entities/ExperimentDoc.js';
 export * from './entities/LessonDoc.js';
 export * from './entities/MetaDoc.js';
+export * from './entities/Tag.js';

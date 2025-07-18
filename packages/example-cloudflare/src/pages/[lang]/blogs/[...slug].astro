@@ -1,11 +1,11 @@
 ---
-import { Tag, LanguageUtil, Container } from '@coffic/cosy-ui';
+import { LanguageUtil, Container } from '@coffic/cosy-ui';
 import AppLayout from '@/layouts/AppLayout.astro';
-import { blogRepo } from '@coffic/cosy-content';
+import { blogRepo, Tag } from '@coffic/cosy-content';
 
 export const prerender = true;
 export async function getStaticPaths() {
-    return await blogRepo.getStaticPaths();
+  return await blogRepo.getStaticPaths();
 }
 
 interface Props {}
@@ -18,7 +18,7 @@ const doc = await blogRepo.find(id);
 const currentLang = LanguageUtil.getCurrentLanguage(Astro);
 
 if (!doc) {
-    return Astro.redirect(404);
+  return Astro.redirect(404);
 }
 
 const { Content } = await doc.render();
@@ -27,14 +27,14 @@ const sidebarItem = await Tag.makeRootSidebarItem(currentLang);
 ---
 
 <AppLayout
-    title={doc.getTitle()}
-    isArticle={true}
-    verticalPadding="2xl"
-    description={doc.getDescription()}
-    sidebar={sidebarItem}
-    layout="row"
-    showTableOfContents={true}>
-    <Container padding="xl" size="full">
-        <Content />
-    </Container>
+  title={doc.getTitle()}
+  isArticle={true}
+  verticalPadding="2xl"
+  description={doc.getDescription()}
+  sidebar={sidebarItem}
+  layout="row"
+  showTableOfContents={true}>
+  <Container padding="xl" size="full">
+    <Content />
+  </Container>
 </AppLayout>

@@ -35,20 +35,11 @@
       "import": "./dist/schema.js",
       "require": "./dist/schema.js",
       "types": "./dist/schema.d.ts"
-    },
-    "./repos/*": {
-      "import": "./dist/repos/*.js",
-      "require": "./dist/repos/*.js",
-      "types": "./dist/repos/*.d.ts"
-    },
-    "./entities/*": {
-      "import": "./dist/entities/*.js",
-      "require": "./dist/entities/*.js",
-      "types": "./dist/entities/*.d.ts"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "package.json"
   ],
   "scripts": {
     "build": "tsc",
@@ -57,11 +48,6 @@
   "type": "module",
   "peerDependencies": {
     "astro": "^5.12.0"
-  },
-  "peerDependenciesMeta": {
-    "astro": {
-      "optional": false
-    }
   },
   "devDependencies": {
     "@types/node": "^24.0.14",
