@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    dependencies:
+      sharp:
+        specifier: ^0.33.5
+        version: 0.33.5
 
   packages/cosy-content:
     dependencies:
