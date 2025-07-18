@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",
+    "@astrojs/mdx": "^4.3.1",
+    "@astrojs/vue": "^5.1.0",
     "@coffic/cosy-content": "workspace:*",
     "@coffic/cosy-ui": "^0.9.6",
-    "astro": "^5.12.0"
+    "astro": "^5.12.0",
+    "vue": "^3.5.17"
   }
 }
