@@ -66,7 +66,7 @@ jobs:
           git pull
           git add package.json
           git commit -m "🎨 Chore: bump version to ${{ steps.version.outputs.new_version }}"
-          git tag "cosy-content/v${{ steps.version.outputs.new_version }}"
+          git tag "v${{ steps.version.outputs.new_version }}"
           git push
           git push --tags
 
