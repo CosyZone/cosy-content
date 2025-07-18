@@ -10,7 +10,7 @@ Caddyfile 是 Caddy 的主要配置文件，采用简单直观的语法。
 
 ### 基本结构
 
-```caddyfile
+```text
 domain.com {
     directive arg1 arg2
 }
@@ -18,7 +18,7 @@ domain.com {
 
 ### 全局选项
 
-```caddyfile
+```text
 {
     email admin@example.com
     admin off  # 关闭管理API
@@ -30,7 +30,7 @@ domain.com {
 
 ### 1. 静态文件服务器
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server
@@ -40,7 +40,7 @@ example.com {
 
 ### 2. 反向代理
 
-```caddyfile
+```text
 api.example.com {
     reverse_proxy localhost:8080 {
         header_up Host {upstream_hostport}
@@ -52,7 +52,7 @@ api.example.com {
 
 ### 3. PHP 应用
 
-```caddyfile
+```text
 php.example.com {
     root * /var/www/php
     php_fastcgi localhost:9000
@@ -62,7 +62,7 @@ php.example.com {
 
 ### 4. 多站点配置
 
-```caddyfile
+```text
 site1.example.com {
     root * /var/www/site1
     file_server
@@ -78,19 +78,19 @@ site2.example.com {
 
 ### root
 设置站点根目录：
-```caddyfile
+```text
 root * /path/to/site
 ```
 
 ### file_server
 启用静态文件服务：
-```caddyfile
+```text
 file_server [browse]  # browse 参数启用目录浏览
 ```
 
 ### log
 配置访问日志：
-```caddyfile
+```text
 log {
     output file /var/log/caddy/access.log
     format json
@@ -99,7 +99,7 @@ log {
 
 ### tls
 配置 TLS 选项：
-```caddyfile
+```text
 tls {
     protocols tls1.2 tls1.3
     ciphers TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384

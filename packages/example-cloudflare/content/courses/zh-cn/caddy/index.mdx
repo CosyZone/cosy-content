@@ -32,7 +32,7 @@ Caddy 是一个开源的 Web 服务器，因其自动化的 HTTPS 配置、易�
 
 Caddy 的一大亮点是其自动化的 HTTPS 配置。只需简单的配置，Caddy 就能自动获取和续订 SSL 证书，确保网站的安全性。
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server
@@ -45,7 +45,7 @@ example.com {
 
 Caddy 可以轻松配置为反向代理服务器，支持负载均衡和健康检查。
 
-```caddyfile
+```text
 example.com {
     reverse_proxy /api/* localhost:8080
 }
@@ -79,7 +79,7 @@ docker run -d -p 80:80 -p 443:443 caddy
 
 Caddy 的配置文件称为 Caddyfile，语法简单直观。以下是一个基本的 Caddyfile 示例：
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server

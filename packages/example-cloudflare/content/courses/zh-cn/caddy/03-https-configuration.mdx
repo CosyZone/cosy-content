@@ -8,7 +8,7 @@ Caddy 的一大特色是自动 HTTPS 配置。本文将详细介绍 Caddy 的 HT
 
 默认情况下，Caddy 会自动为所有合格的域名申请和管理 HTTPS 证书：
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server
@@ -24,7 +24,7 @@ example.com {
 
 ### 使用自定义证书
 
-```caddyfile
+```text
 example.com {
     tls /path/to/cert.pem /path/to/key.pem
 }
@@ -32,7 +32,7 @@ example.com {
 
 ### 使用内部自签名证书
 
-```caddyfile
+```text
 example.com {
     tls internal
 }
@@ -40,7 +40,7 @@ example.com {
 
 ### 禁用自动 HTTPS
 
-```caddyfile
+```text
 {
     auto_https off
 }
@@ -50,7 +50,7 @@ example.com {
 
 ### 配置 TLS 版本和加密套件
 
-```caddyfile
+```text
 example.com {
     tls {
         protocols tls1.2 tls1.3
@@ -62,7 +62,7 @@ example.com {
 
 ### OCSP Stapling
 
-```caddyfile
+```text
 example.com {
     tls {
         must_staple
@@ -74,7 +74,7 @@ example.com {
 
 ### 指定证书颁发机构
 
-```caddyfile
+```text
 example.com {
     tls {
         issuer acme {
@@ -87,7 +87,7 @@ example.com {
 
 ### 使用 ZeroSSL
 
-```caddyfile
+```text
 example.com {
     tls {
         issuer zerossl {
@@ -101,7 +101,7 @@ example.com {
 
 ### 本地开发使用自签名证书
 
-```caddyfile
+```text
 localhost {
     tls internal
     root * /path/to/site
@@ -124,7 +124,7 @@ openssl s_client -connect example.com:443 -servername example.com
 ### 常见问题解决
 
 1. **证书申请失败**
-   ```caddyfile
+   ```text
    example.com {
        tls {
            issuer acme {
@@ -145,7 +145,7 @@ openssl s_client -connect example.com:443 -servername example.com
 
 ### 启用 Session Tickets
 
-```caddyfile
+```text
 example.com {
     tls {
         session_tickets
@@ -155,7 +155,7 @@ example.com {
 
 ### 配置 HSTS
 
-```caddyfile
+```text
 example.com {
     header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 }
@@ -165,7 +165,7 @@ example.com {
 
 ### TLS 相关日志配置
 
-```caddyfile
+```text
 example.com {
     log {
         output file /var/log/caddy/tls.log

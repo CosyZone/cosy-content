@@ -8,7 +8,7 @@ title: Caddy 最佳实践指南
 
 ### 1. 静态文件服务
 
-```caddyfile
+```text
 example.com {
     # 启用压缩
     encode gzip zstd {
@@ -30,7 +30,7 @@ example.com {
 
 ### 2. 连接优化
 
-```caddyfile
+```text
 {
     servers {
         protocol {
@@ -45,7 +45,7 @@ example.com {
 
 ### 1. 基础安全头
 
-```caddyfile
+```text
 example.com {
     header {
         # 安全头
@@ -64,7 +64,7 @@ example.com {
 
 ### 2. 访问控制
 
-```caddyfile
+```text
 example.com {
     # IP 白名单
     @allowed_ips {
@@ -84,7 +84,7 @@ example.com {
 
 ### 1. 结构化日志
 
-```caddyfile
+```text
 {
     log {
         output file /var/log/caddy/access.log {
@@ -103,7 +103,7 @@ example.com {
 
 ### 2. 错误页面
 
-```caddyfile
+```text
 example.com {
     handle_errors {
         root * /var/www/error_pages
@@ -133,7 +133,7 @@ find /backup/caddy -type f -mtime +30 -delete
 
 ### 2. 监控配置
 
-```caddyfile
+```text
 example.com {
     # 健康检查端点
     handle /health {
@@ -151,7 +151,7 @@ example.com {
 
 ### 1. 本地开发设置
 
-```caddyfile
+```text
 localhost {
     tls internal  # 使用自签名证书
     
@@ -175,7 +175,7 @@ localhost {
 
 ### 2. 调试配置
 
-```caddyfile
+```text
 {
     debug  # 启用调试模式
     
@@ -190,7 +190,7 @@ localhost {
 
 ### 1. 负载均衡
 
-```caddyfile
+```text
 example.com {
     reverse_proxy {
         to backend-1:80 backend-2:80 backend-3:80
@@ -204,7 +204,7 @@ example.com {
 
 ### 2. 故障转移
 
-```caddyfile
+```text
 example.com {
     reverse_proxy {
         to primary:80
@@ -232,7 +232,7 @@ wrk -t12 -c400 -d30s https://example.com/
 
 ### 2. 监控指标
 
-```caddyfile
+```text
 example.com {
     # Prometheus 指标收集
     metrics {

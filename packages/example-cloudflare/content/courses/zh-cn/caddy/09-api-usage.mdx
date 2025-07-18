@@ -10,7 +10,7 @@ title: Caddy API 使用指南
 
 默认情况下，Admin API 监听在 `localhost:2019`。可以通过以下配置修改：
 
-```caddyfile
+```text
 {
     admin localhost:2019
     # 或完全禁用
@@ -22,7 +22,7 @@ title: Caddy API 使用指南
 
 为 Admin API 添加认证：
 
-```caddyfile
+```text
 {
     admin localhost:2019 {
         credentials admin:$2a$14$jH.EG0EG2GL6GG7HXXUOCeLUPYvBKX.EG2GL6GG7HXXUOCe
@@ -212,7 +212,7 @@ curl localhost:2019/config/apps/http/servers/myserver/routes \
 ## 安全建议
 
 1. **限制访问**
-   ```caddyfile
+   ```text
    {
        admin 127.0.0.1:2019 {
            origins 192.168.1.0/24 10.0.0.0/8
@@ -221,7 +221,7 @@ curl localhost:2019/config/apps/http/servers/myserver/routes \
    ```
 
 2. **使用 HTTPS**
-   ```caddyfile
+   ```text
    {
        admin {
            listen localhost:2019

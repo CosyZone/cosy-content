@@ -8,7 +8,7 @@ title: Caddy 反向代理进阶
 
 ### 简单代理
 
-```caddyfile
+```text
 example.com {
     reverse_proxy localhost:8080
 }
@@ -16,7 +16,7 @@ example.com {
 
 ### 多后端服务器
 
-```caddyfile
+```text
 example.com {
     reverse_proxy backend1:8080 backend2:8080 backend3:8080 {
         lb_policy round_robin
@@ -28,7 +28,7 @@ example.com {
 
 ### 轮询（Round Robin）
 
-```caddyfile
+```text
 reverse_proxy {
     to backend1:8080 backend2:8080
     lb_policy round_robin
@@ -37,7 +37,7 @@ reverse_proxy {
 
 ### 最少连接
 
-```caddyfile
+```text
 reverse_proxy {
     to backend1:8080 backend2:8080
     lb_policy least_conn
@@ -46,7 +46,7 @@ reverse_proxy {
 
 ### IP Hash
 
-```caddyfile
+```text
 reverse_proxy {
     to backend1:8080 backend2:8080
     lb_policy ip_hash
@@ -57,7 +57,7 @@ reverse_proxy {
 
 ### 基础健康检查
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     health_uri /health
     health_interval 10s
@@ -68,7 +68,7 @@ reverse_proxy backend:8080 {
 
 ### 高级健康检查
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     health_uri /health
     health_interval 5s
@@ -82,7 +82,7 @@ reverse_proxy backend:8080 {
 
 ### 修改请求头
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     header_up Host {upstream_hostport}
     header_up X-Real-IP {remote_host}
@@ -93,7 +93,7 @@ reverse_proxy backend:8080 {
 
 ### 响应头处理
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     header_down Access-Control-Allow-Origin *
     header_down X-Frame-Options DENY
@@ -104,7 +104,7 @@ reverse_proxy backend:8080 {
 
 ### 故障转移
 
-```caddyfile
+```text
 reverse_proxy {
     to primary:8080
     to backup:8080 backup
@@ -113,7 +113,7 @@ reverse_proxy {
 
 ### 重试策略
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     try_duration 5s
     try_interval 250ms
@@ -122,7 +122,7 @@ reverse_proxy backend:8080 {
 
 ### 缓冲设置
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     buffer_requests
     buffer_responses
@@ -134,7 +134,7 @@ reverse_proxy backend:8080 {
 
 ### 连接池配置
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     transport http {
         dial_timeout 2s
@@ -146,7 +146,7 @@ reverse_proxy backend:8080 {
 
 ### WebSocket 支持
 
-```caddyfile
+```text
 example.com {
     reverse_proxy /ws backend:8080 {
         transport http {
@@ -160,7 +160,7 @@ example.com {
 
 ### 基于路径的路由
 
-```caddyfile
+```text
 example.com {
     reverse_proxy /api/* backend-api:8080
     reverse_proxy /admin/* backend-admin:8080
@@ -170,7 +170,7 @@ example.com {
 
 ### 条件路由
 
-```caddyfile
+```text
 example.com {
     @api {
         path /api/*
@@ -184,7 +184,7 @@ example.com {
 
 ### 访问日志
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     log {
         output file /var/log/caddy/proxy.log
@@ -196,7 +196,7 @@ reverse_proxy backend:8080 {
 
 ### 错误处理
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     handle_response {
         status 500 {

@@ -8,7 +8,7 @@ title: Caddy 监控和日志管理指南
 
 ### 基础日志设置
 
-```caddyfile
+```text
 {
     log {
         output file /var/log/caddy/access.log {
@@ -24,7 +24,7 @@ title: Caddy 监控和日志管理指南
 
 ### 自定义日志格式
 
-```caddyfile
+```text
 {
     log {
         output file /var/log/caddy/access.log
@@ -54,7 +54,7 @@ title: Caddy 监控和日志管理指南
 
 ### Prometheus 集成
 
-```caddyfile
+```text
 example.com {
     # 启用 Prometheus 指标
     metrics /metrics {
@@ -152,7 +152,7 @@ services:
 ```
 
 logstash.conf 配置：
-```conf
+```text
 input {
   file {
     path => "/var/log/caddy/access.log"
@@ -213,7 +213,7 @@ groups:
 
 ### 系统指标
 
-```caddyfile
+```text
 example.com {
     # 系统资源监控
     metrics {
@@ -240,7 +240,7 @@ go tool pprof -http=:8080 -seconds=30 http://localhost:2019/debug/pprof/profile
 
 ### logrotate 配置
 
-```conf
+```text
 # /etc/logrotate.d/caddy
 /var/log/caddy/*.log {
     daily

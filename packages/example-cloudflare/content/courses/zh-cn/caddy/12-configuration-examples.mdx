@@ -8,7 +8,7 @@ title: Caddy 配置示例集
 
 ### 1. 基础静态网站
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server
@@ -25,7 +25,7 @@ example.com {
 
 ### 2. 单页应用（SPA）
 
-```caddyfile
+```text
 example.com {
     root * /var/www/spa
     encode gzip
@@ -46,7 +46,7 @@ example.com {
 
 ### 1. WordPress 配置
 
-```caddyfile
+```text
 example.com {
     root * /var/www/wordpress
     php_fastcgi unix//run/php-fpm.sock
@@ -65,7 +65,7 @@ example.com {
 
 ### 2. Laravel 应用
 
-```caddyfile
+```text
 example.com {
     root * /var/www/laravel/public
     php_fastcgi unix//run/php-fpm.sock
@@ -86,7 +86,7 @@ example.com {
 
 ### 1. Node.js 应用
 
-```caddyfile
+```text
 example.com {
     reverse_proxy localhost:3000 {
         # WebSocket 支持
@@ -110,7 +110,7 @@ example.com {
 
 ### 2. 微服务架构
 
-```caddyfile
+```text
 example.com {
     # API 服务
     handle /api/* {
@@ -138,7 +138,7 @@ example.com {
 
 ### 1. 基础认证
 
-```caddyfile
+```text
 example.com {
     root * /var/www/protected
     
@@ -152,7 +152,7 @@ example.com {
 
 ### 2. IP 限制和速率限制
 
-```caddyfile
+```text
 example.com {
     # IP 白名单
     @allowed_ips {
@@ -180,7 +180,7 @@ example.com {
 
 ### 1. 多站点配置
 
-```caddyfile
+```text
 {
     email admin@example.com
 }
@@ -205,7 +205,7 @@ api.example.com {
 
 ### 2. 动态后端
 
-```caddyfile
+```text
 example.com {
     reverse_proxy {
         dynamic a {
@@ -224,7 +224,7 @@ example.com {
 
 ### 1. 本地开发配置
 
-```caddyfile
+```text
 localhost {
     tls internal
     
@@ -252,7 +252,7 @@ localhost {
 
 ### 2. 调试配置
 
-```caddyfile
+```text
 {
     debug
     local_certs
@@ -279,7 +279,7 @@ localhost {
 
 ### 1. 静态资源优化
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     
@@ -309,7 +309,7 @@ example.com {
 
 ### 2. 代理优化
 
-```caddyfile
+```text
 example.com {
     reverse_proxy backend:8080 {
         # 连接池

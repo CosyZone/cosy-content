@@ -8,7 +8,7 @@ title: Caddy 安全配置指南
 
 ### 安全响应头
 
-```caddyfile
+```text
 example.com {
     header {
         # 防止点击劫持
@@ -31,7 +31,7 @@ example.com {
 
 ### 基本认证
 
-```caddyfile
+```text
 example.com {
     basicauth {
         admin JDJhJDE0JDFrMnN5dGdQVUxLOHBtRzlxQS5tci5XMUVzbjlzWG9wYkV4RzBaeTZYTEhtMmJwZlBGRTZp
@@ -41,7 +41,7 @@ example.com {
 
 ### IP 访问限制
 
-```caddyfile
+```text
 example.com {
     @blocked {
         remote_ip 192.168.1.0/24 10.0.0.0/8
@@ -54,7 +54,7 @@ example.com {
 
 ### 强化 TLS 设置
 
-```caddyfile
+```text
 example.com {
     tls {
         protocols tls1.3 tls1.2
@@ -68,7 +68,7 @@ example.com {
 
 ### HSTS 配置
 
-```caddyfile
+```text
 example.com {
     header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 }
@@ -78,7 +78,7 @@ example.com {
 
 ### DDoS 防护
 
-```caddyfile
+```text
 example.com {
     rate_limit {
         zone dynamic 10m
@@ -96,7 +96,7 @@ example.com {
 
 ### 文件访问限制
 
-```caddyfile
+```text
 example.com {
     @forbidden {
         path *.sql *.conf *.config *.htaccess .git* .env*
@@ -113,7 +113,7 @@ example.com {
 
 ### SQL 注入防护
 
-```caddyfile
+```text
 example.com {
     @sql_injection {
         path_regexp (?i)(union|select|insert|delete|update|drop|;|--|'|")
@@ -124,7 +124,7 @@ example.com {
 
 ### XSS 防护
 
-```caddyfile
+```text
 example.com {
     header {
         Content-Security-Policy "
@@ -144,7 +144,7 @@ example.com {
 
 ### 安全日志配置
 
-```caddyfile
+```text
 example.com {
     log {
         output file /var/log/caddy/access.log {
@@ -160,7 +160,7 @@ example.com {
 
 ### 错误页面
 
-```caddyfile
+```text
 example.com {
     handle_errors {
         respond "{http.error.status_code} {http.error.status_text}" {http.error.status_code}
@@ -172,7 +172,7 @@ example.com {
 
 ### JWT 认证
 
-```caddyfile
+```text
 example.com {
     jwt {
         primary {
@@ -187,7 +187,7 @@ example.com {
 
 ### CORS 配置
 
-```caddyfile
+```text
 example.com {
     header {
         Access-Control-Allow-Origin "https://trusted-site.com"
@@ -203,7 +203,7 @@ example.com {
 
 ### 审计日志
 
-```caddyfile
+```text
 example.com {
     log {
         output file /var/log/caddy/audit.log {
@@ -225,7 +225,7 @@ example.com {
 
 ### 安全告警
 
-```caddyfile
+```text
 example.com {
     @security_breach {
         expression {http.request.uri.path} matches "/admin/*"

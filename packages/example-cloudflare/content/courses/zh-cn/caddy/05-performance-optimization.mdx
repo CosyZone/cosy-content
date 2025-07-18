@@ -34,7 +34,7 @@ net.ipv4.tcp_max_syn_backlog = 4096
 
 ### 启用压缩
 
-```caddyfile
+```text
 example.com {
     encode gzip zstd {
         minimum_length 1000  # 最小压缩大小
@@ -49,7 +49,7 @@ example.com {
 
 ### 静态文件优化
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server {
@@ -65,7 +65,7 @@ example.com {
 
 ### 内存缓存
 
-```caddyfile
+```text
 example.com {
     root * /var/www/html
     file_server {
@@ -82,7 +82,7 @@ example.com {
 
 ### HTTP/2 设置
 
-```caddyfile
+```text
 example.com {
     protocols h2 h2c
     
@@ -95,7 +95,7 @@ example.com {
 
 ### HTTP/3 配置
 
-```caddyfile
+```text
 example.com {
     protocols h3 h2 h1
     
@@ -114,7 +114,7 @@ example.com {
 
 ### 连接池设置
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     transport http {
         dial_timeout 2s
@@ -129,7 +129,7 @@ reverse_proxy backend:8080 {
 
 ### 健康检查优化
 
-```caddyfile
+```text
 reverse_proxy backend:8080 {
     health_uri /health
     health_interval 5s
@@ -144,7 +144,7 @@ reverse_proxy backend:8080 {
 
 ### 浏览器缓存
 
-```caddyfile
+```text
 example.com {
     @static {
         path *.css *.js *.jpg *.png *.gif *.ico
@@ -158,7 +158,7 @@ example.com {
 
 ### 条件请求处理
 
-```caddyfile
+```text
 example.com {
     @assets {
         path /assets/*
@@ -175,7 +175,7 @@ example.com {
 
 ### 请求日志
 
-```caddyfile
+```text
 example.com {
     log {
         output file /var/log/caddy/access.log {
@@ -190,7 +190,7 @@ example.com {
 
 ### 性能指标
 
-```caddyfile
+```text
 example.com {
     metrics /metrics  # Prometheus 指标
     
@@ -204,7 +204,7 @@ example.com {
 
 ### TLS 优化
 
-```caddyfile
+```text
 example.com {
     tls {
         protocols tls1.3 tls1.2
@@ -217,7 +217,7 @@ example.com {
 
 ### DDoS 防护
 
-```caddyfile
+```text
 example.com {
     rate_limit {
         zone dynamic 10m
@@ -241,7 +241,7 @@ wrk -t12 -c400 -d30s https://example.com
 
 ### 性能监控
 
-```caddyfile
+```text
 example.com {
     debug  # 仅在调试时启用
     

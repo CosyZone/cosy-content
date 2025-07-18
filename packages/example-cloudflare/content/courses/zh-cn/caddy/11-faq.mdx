@@ -52,7 +52,7 @@ example.com {
 **问题**: 反向代理无法正常工作。
 
 **解决方案**:
-```caddyfile
+```text
 example.com {
     reverse_proxy localhost:8080 {
         # 添加必要的请求头
@@ -72,7 +72,7 @@ example.com {
 **问题**: 无法访问静态文件或出现 403 错误。
 
 **解决方案**:
-```caddyfile
+```text
 example.com {
     # 检查文件权限
     root * /var/www/html
@@ -89,7 +89,7 @@ example.com {
 **问题**: Caddy 占用内存过多。
 
 **解决方案**:
-```caddyfile
+```text
 {
     # 调整缓存设置
     servers {
@@ -110,7 +110,7 @@ example.com {
 **问题**: 网站响应速度慢。
 
 **解决方案**:
-```caddyfile
+```text
 example.com {
     # 启用压缩
     encode gzip zstd
@@ -134,7 +134,7 @@ example.com {
 **问题**: 日志文件占用空间过大或找不到日志。
 
 **解决方案**:
-```caddyfile
+```text
 {
     log {
         output file /var/log/caddy/access.log {
@@ -151,7 +151,7 @@ example.com {
 **问题**: 无法获取监控指标。
 
 **解决方案**:
-```caddyfile
+```text
 example.com {
     # 配置 Prometheus 指标
     metrics /metrics {
@@ -229,7 +229,7 @@ xcaddy build \
 **问题**: 插件配置不生效。
 
 **解决方案**:
-```caddyfile
+```text
 {
     order authenticate before respond
     order authorize before reverse_proxy
