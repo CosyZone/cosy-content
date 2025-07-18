@@ -9,10 +9,13 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.1",
     "@astrojs/node": "^9.3.0",
+    "@astrojs/vue": "^5.1.0",
     "@coffic/cosy-content": "workspace:*",
     "@coffic/cosy-ui": "^0.9.0",
     "astro": "^5.12.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "vue": "^3.5.17"
   }
 }
