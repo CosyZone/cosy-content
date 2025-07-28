@@ -3,7 +3,7 @@ import { render, type CollectionEntry } from 'astro:content';
 /**
  * 文档基类，提供所有文档类型共享的基本功能
  */
-export default abstract class BaseDoc {
+export abstract class BaseDoc {
     abstract entry: CollectionEntry<string>;
 
     getId(): string {
