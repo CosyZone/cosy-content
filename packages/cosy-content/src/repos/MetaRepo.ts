@@ -1,4 +1,4 @@
-import MetaDoc from '../entities/MetaDoc.js';
+import { MetaDoc } from '../entities/MetaDoc.js';
 import { cosyLogger } from '../cosy.js';
 import { type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';

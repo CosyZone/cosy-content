@@ -1,4 +1,4 @@
-import CourseDoc from '../entities/CourseDoc.js';
+import { CourseDoc } from '../entities/CourseDoc.js';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
 

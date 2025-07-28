@@ -6,7 +6,7 @@ import { LinkUtil } from '../utils/link.js';
 import type { IHeadingType } from '../types/heading.js';
 import { BaseDoc } from './BaseDoc.js';
 
-export default class ExperimentDoc extends BaseDoc implements SidebarProvider {
+export class ExperimentDoc extends BaseDoc implements SidebarProvider {
   entry: ExperimentEntry;
 
   constructor(entry: ExperimentEntry) {

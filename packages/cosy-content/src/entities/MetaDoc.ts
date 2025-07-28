@@ -5,7 +5,7 @@ import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
 import { cosyLogger } from '../cosy.js';
 import { BaseDoc } from './BaseDoc.js';
 
-export default class MetaDoc extends BaseDoc implements SidebarProvider {
+export class MetaDoc extends BaseDoc implements SidebarProvider {
   entry: MetaEntry;
   collectionName = 'meta' as const;
 

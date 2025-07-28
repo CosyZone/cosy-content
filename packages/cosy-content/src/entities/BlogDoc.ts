@@ -45,7 +45,7 @@ import { BaseDoc } from './BaseDoc.js';
  * ```
  */
 
-export default class BlogDoc extends BaseDoc implements SidebarProvider {
+export class BlogDoc extends BaseDoc implements SidebarProvider {
   entry: BlogEntry;
 
   private constructor(entry: BlogEntry) {

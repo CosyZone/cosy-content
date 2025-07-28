@@ -1,4 +1,4 @@
-import BlogDoc from '../entities/BlogDoc.js';
+import { BlogDoc } from '../entities/BlogDoc.js';
 import type Tag from '../entities/Tag.js';
 import { cosyLogger } from '../cosy.js';
 import { type CollectionEntry } from 'astro:content';

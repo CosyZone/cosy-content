@@ -29,7 +29,7 @@ import { courseRepo, type CourseEntry } from '../repos/CourseRepo.js';
  *     └── ...
  * ```
  */
-export default class CourseDoc extends BaseDoc implements SidebarProvider {
+export class CourseDoc extends BaseDoc implements SidebarProvider {
   entry: CourseEntry;
 
   constructor(entry: CourseEntry) {

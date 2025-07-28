@@ -40,7 +40,7 @@ import { BaseDoc } from './BaseDoc.js';
  * - 每个语言版本包含完整的课程内容
  * - 课程目录可以作为 git 子模块独立管理
  */
-export default class LessonDoc extends BaseDoc implements SidebarProvider {
+export class LessonDoc extends BaseDoc implements SidebarProvider {
   entry: LessonEntry;
 
   constructor(entry: LessonEntry) {

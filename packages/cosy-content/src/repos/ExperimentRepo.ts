@@ -1,6 +1,6 @@
 import { type CollectionEntry } from 'astro:content';
 import { BaseDB } from './BaseRepo.js';
-import ExperimentDoc from '../entities/ExperimentDoc.js';
+import { ExperimentDoc } from '../entities/ExperimentDoc.js';
 import { cosyLogger } from '../cosy.js';
 
 export const COLLECTION_EXPERIMENT = 'experiments' as const;
