@@ -11,7 +11,7 @@
             "astro/client",
             "node"
         ],
-        "sourceMap": true,
+        "sourceMap": false,
         "module": "esnext",
         "moduleResolution": "bundler",
         "target": "ES2020",
