@@ -133,7 +133,7 @@ export class BlogDoc extends BaseDoc implements SidebarProvider {
       cosyLogger.info(`获取博客文档链接，博客文档ID: ${this.entry.id}`);
     }
 
-    return `/${this.getLang()}/blogs/${blogIdWithoutLang}`;
+    return LinkUtil.createUrl(`/${this.getLang()}/blogs/${blogIdWithoutLang}`);
   }
 
   getTags(): Tag[] {

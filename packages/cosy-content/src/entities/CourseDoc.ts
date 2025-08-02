@@ -152,7 +152,10 @@ export class CourseDoc extends BaseDoc implements SidebarProvider {
   }
 
   getLink(): string {
-    return LinkUtil.getCourseLink(this.entry.id);
+    const lang = this.getLang();
+    const slug = this.getSlug();
+
+    return LinkUtil.createUrl(`/${lang}/courses/${slug}`);
   }
 
   getDate(): Date {

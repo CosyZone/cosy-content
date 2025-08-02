@@ -1,7 +1,6 @@
 import { cosyLogger } from '../cosy.js';
 import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
 import { LinkUtil } from '../utils/link.js';
-import { type CollectionEntry } from 'astro:content';
 import { BaseDoc } from './BaseDoc.js';
 import { manualRepo, type ManualEntry } from '../repos/ManualRepo.js';
 
@@ -194,7 +193,7 @@ export class ManualDoc extends BaseDoc implements SidebarProvider {
             cosyLogger.info(`获取手册文档链接，手册文档ID: ${this.entry.id}`);
         }
 
-        return `/${lang}/manuals/${manualIdWithoutLang}`;
+        return LinkUtil.createUrl(`/${lang}/manuals/${manualIdWithoutLang}`);
     }
 
     getDate(): Date {

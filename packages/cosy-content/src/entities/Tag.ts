@@ -17,7 +17,7 @@ export class Tag {
   toSidebarItem(lang: string): SidebarItemEntity {
     return new SidebarItemEntity({
       text: this.name,
-      link: LinkUtil.getTagLink(lang, this.name),
+      link: LinkUtil.createUrl(`/${lang}/blogs/tag/${this.name}`),
     });
   }
 
@@ -33,7 +33,7 @@ export class Tag {
 
     return new SidebarItemEntity({
       text: 'Tags',
-      link: LinkUtil.getTagLink(lang, ''),
+      link: LinkUtil.createUrl(`/${lang}/blogs/tag`),
       items: tags.map((tag: Tag) => tag.toSidebarItem(lang)),
     });
   }

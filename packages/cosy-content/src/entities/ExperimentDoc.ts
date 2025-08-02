@@ -94,13 +94,10 @@ export class ExperimentDoc extends BaseDoc implements SidebarProvider {
   }
 
   getLink(): string {
-    const debug = false;
     const lang = this.getLang();
-    const link = LinkUtil.getExperimentLink(lang, this.getId());
-    if (debug) {
-      cosyLogger.info(`获取 ${this.entry.id} 的链接: ${link}`);
-    }
-    return link;
+    const slug = this.getSlug();
+
+    return LinkUtil.createUrl(`/${lang}/experiments/${slug}`);
   }
 
   getHTML(): string {

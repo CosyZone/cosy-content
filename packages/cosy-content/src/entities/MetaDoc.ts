@@ -80,7 +80,19 @@ export class MetaDoc extends BaseDoc implements SidebarProvider {
   }
 
   getLink(): string {
-    return LinkUtil.getMetaLink(this.getLang(), this.getSlug());
+    return LinkUtil.createUrl(`/${this.getLang()}/meta/${this.getSlug()}`);
+  }
+
+  static getPrivacyLink(lang: string): string {
+    return LinkUtil.createUrl(`/${lang}/meta/privacy`);
+  }
+
+  static getTermsLink(lang: string): string {
+    return LinkUtil.createUrl(`/${lang}/meta/terms`);
+  }
+
+  static getAboutLink(lang: string): string {
+    return LinkUtil.createUrl(`/${lang}/meta/about`);
   }
 
   async getSiblingDocs(): Promise<MetaDoc[]> {

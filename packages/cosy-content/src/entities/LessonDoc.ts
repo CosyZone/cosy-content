@@ -128,13 +128,15 @@ export class LessonDoc extends BaseDoc implements SidebarProvider {
   }
 
   getLink(): string {
-    const debug = false;
     const lang = this.getLang();
-    const link = LinkUtil.getLessonLink(lang, this.getId());
-    if (debug) {
-      cosyLogger.info(`获取 ${this.entry.id} 的链接: ${link}`);
+    const lessonId = this.getId()
+
+    if (lessonId.endsWith(lang)) {
+      return LinkUtil.createUrl(`/${lang}/lessons/${lessonId.replace(`${lang}`, '')}`);
+    } else {
+      const idWithoutLang = lessonId.replace(`${lang}/`, '');
+      return LinkUtil.createUrl(`/${lang}/lessons/${idWithoutLang}`);
     }
-    return link;
   }
 
   getHTML(): string {
