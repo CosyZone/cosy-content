@@ -1,0 +1,50 @@
+---
+import AppLayout from '@/layouts/AppLayout.astro';
+import { Error404, type ISidebarItem } from '@coffic/cosy-ui';
+import { manualRepo } from '@coffic/cosy-content';
+import type { RenderResult } from 'astro:content';
+
+const { lang, slug } = Astro.params;
+// 如果 slug 为空或 undefined，则查找根目录的 index 文件
+const manualPath = slug ? `${lang}/${slug}` : lang;
+const manual = await manualRepo.find(manualPath);
+let title = '';
+let renderResult: RenderResult | null = null;
+let sidebarItems: ISidebarItem | null = null;
+
+if (manual) {
+  title = manual.getTitle();
+  renderResult = await manual.render();
+
+  // 获取顶级文档
+  const topDoc = await manual.getAncestor(1);
+  if (topDoc) {
+    sidebarItems = await topDoc.toSidebarItem();
+  }
+} else {
+  title = '404 Not Found';
+}
+
+export const getStaticPaths = async () => {
+  return await manualRepo.getStaticPaths();
+};
+---
+
+<AppLayout
+  title={title}
+  description={title}
+  sidebar={sidebarItems}
+  showSidebar={true}
+  isArticle={true}
+  showTableOfContents={true}
+  layout="row">
+  {
+    renderResult ? (
+      <>
+        <renderResult.Content />
+      </>
+    ) : (
+      <Error404 debugKVs={{ slug }} />
+    )
+  }
+</AppLayout>

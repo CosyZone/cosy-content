@@ -1,0 +1,144 @@
+---
+title: 'Installation Guide'
+description: 'Detailed product installation instructions and configuration steps'
+order: 3
+date: 2024-01-01
+draft: false
+hidden: false
+important: true
+badge: 'Important'
+category: 'guide'
+tags: ['installation', 'setup', 'configuration']
+---
+
+# {frontmatter.title}
+
+This guide provides detailed instructions on how to install and configure our product.
+
+## System Requirements
+
+### Minimum Requirements
+- **Operating System**: Windows 10, macOS 10.15+, Ubuntu 18.04+
+- **Memory**: 4GB RAM
+- **Storage**: 2GB available space
+- **Network**: Stable internet connection
+
+### Recommended Configuration
+- **Operating System**: Windows 11, macOS 12+, Ubuntu 20.04+
+- **Memory**: 8GB RAM or more
+- **Storage**: 5GB available space
+- **Network**: High-speed internet connection
+
+## Installation Methods
+
+### Method 1: Using Package Managers
+
+#### Windows (Chocolatey)
+```powershell
+choco install our-product
+```
+
+#### macOS (Homebrew)
+```bash
+brew install our-product
+```
+
+#### Linux (Snap)
+```bash
+sudo snap install our-product
+```
+
+### Method 2: Manual Installation
+
+1. **Download the package**
+   ```bash
+   wget https://github.com/example/our-product/releases/latest/download/our-product-latest.tar.gz
+   ```
+
+2. **Extract files**
+   ```bash
+   tar -xzf our-product-latest.tar.gz
+   cd our-product
+   ```
+
+3. **Run installation script**
+   ```bash
+   ./install.sh
+   ```
+
+### Method 3: Docker Installation
+
+```bash
+docker pull our-product/our-product:latest
+docker run -d --name our-product our-product/our-product:latest
+```
+
+## Configuration Steps
+
+### 1. Initialize Configuration
+
+```bash
+our-product init
+```
+
+### 2. Set API Key
+
+```bash
+our-product config set api-key YOUR_API_KEY
+```
+
+### 3. Configure Environment
+
+```bash
+our-product config set environment production
+```
+
+## Verify Installation
+
+Run the following commands to verify successful installation:
+
+```bash
+our-product --version
+our-product status
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Issue 1: Permission Error
+**Error Message**: `Permission denied`
+**Solution**: 
+```bash
+sudo chmod +x /usr/local/bin/our-product
+```
+
+#### Issue 2: Missing Dependencies
+**Error Message**: `Library not found`
+**Solution**:
+```bash
+# Ubuntu/Debian
+sudo apt-get install libssl-dev
+
+# macOS
+brew install openssl
+```
+
+#### Issue 3: Network Connection Issues
+**Error Message**: `Connection timeout`
+**Solution**:
+1. Check network connection
+2. Configure proxy settings
+3. Try using mirror sources
+
+## Next Steps
+
+After installation, we recommend continuing with:
+
+- [Getting Started](./getting-started.md) - 5-minute quick start
+- [Configuration Guide](./configuration.md) - Detailed configuration parameters
+- [API Documentation](./api/) - Complete API reference
+
+---
+
+_If you encounter other issues, please check the [Troubleshooting](./advanced/troubleshooting.md) section or contact technical support._ 

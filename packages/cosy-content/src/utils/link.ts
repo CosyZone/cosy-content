@@ -56,6 +56,10 @@ export class LinkUtil {
     return `/${lang}/courses`;
   }
 
+  static getManualsLink(lang: string): string {
+    return `/${lang}/manuals`;
+  }
+
   static getBlogsLink(lang: string): string {
     return `/${lang}/blogs`;
   }
@@ -94,6 +98,18 @@ export class LinkUtil {
     }
 
     return LinkUtil.createUrl(`/${lang}/courses/${courseIdWithoutLang}`);
+  }
+
+  static getManualLink(manualId: string): string {
+    const debug = false;
+    const lang = manualId.split('/')[0];
+    const manualIdWithoutLang = manualId.replace(`${lang}/`, '');
+
+    if (debug) {
+      cosyLogger.info(`获取手册文档链接，手册文档ID: ${manualId}`);
+    }
+
+    return LinkUtil.createUrl(`/${lang}/manuals/${manualIdWithoutLang}`);
   }
 
   static getMetaLink(lang: string, slug: string): string {
@@ -223,6 +239,14 @@ export class LinkUtil {
       path === `/${lang}/blogs` ||
       path === `/${lang}/blogs/` ||
       path.startsWith(`/${lang}/blogs/`)
+    );
+  }
+
+  static isManualsLink(path: string, lang: string): boolean {
+    return (
+      path === `/${lang}/manuals` ||
+      path === `/${lang}/manuals/` ||
+      path.startsWith(`/${lang}/manuals/`)
     );
   }
 

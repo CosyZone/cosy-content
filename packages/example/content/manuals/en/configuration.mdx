@@ -1,0 +1,248 @@
+---
+title: 'Configuration Guide'
+description: 'Detailed product configuration parameters and settings options'
+order: 4
+date: 2024-01-01
+draft: false
+hidden: false
+important: false
+badge: 'Config'
+category: 'guide'
+tags: ['configuration', 'settings', 'options']
+---
+
+# {frontmatter.title}
+
+This guide provides detailed information about various configuration options and parameter settings for the product.
+
+## Configuration Files
+
+### Main Configuration Files
+
+The product uses the following configuration files:
+
+- **Global Config**: `~/.our-product/config.yaml`
+- **Project Config**: `./our-product.yaml`
+- **Environment Config**: `./.env`
+
+### Configuration File Format
+
+```yaml
+# Global configuration file example
+api:
+  key: "your-api-key"
+  endpoint: "https://api.example.com"
+  timeout: 30
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "our_product"
+  user: "username"
+  password: "password"
+
+logging:
+  level: "info"
+  file: "/var/log/our-product.log"
+  max_size: "100MB"
+  max_files: 10
+
+security:
+  ssl: true
+  cert_file: "/path/to/cert.pem"
+  key_file: "/path/to/key.pem"
+```
+
+## Core Configuration Items
+
+### API Configuration
+
+```yaml
+api:
+  # API Key
+  key: "your-api-key"
+  
+  # API Endpoint
+  endpoint: "https://api.example.com"
+  
+  # Request timeout (seconds)
+  timeout: 30
+  
+  # Retry attempts
+  retries: 3
+  
+  # Retry delay (seconds)
+  retry_delay: 1
+```
+
+### Database Configuration
+
+```yaml
+database:
+  # Database type
+  type: "postgresql"  # postgresql, mysql, sqlite
+  
+  # Connection parameters
+  host: "localhost"
+  port: 5432
+  name: "our_product"
+  user: "username"
+  password: "password"
+  
+  # Connection pool settings
+  pool:
+    min_connections: 5
+    max_connections: 20
+    idle_timeout: 300
+```
+
+### Logging Configuration
+
+```yaml
+logging:
+  # Log level
+  level: "info"  # debug, info, warn, error
+  
+  # Log file path
+  file: "/var/log/our-product.log"
+  
+  # Log rotation settings
+  max_size: "100MB"
+  max_files: 10
+  
+  # Log format
+  format: "json"  # json, text
+```
+
+## Environment Variables
+
+### Common Environment Variables
+
+```bash
+# API Configuration
+export OUR_PRODUCT_API_KEY="your-api-key"
+export OUR_PRODUCT_API_ENDPOINT="https://api.example.com"
+
+# Database Configuration
+export OUR_PRODUCT_DB_HOST="localhost"
+export OUR_PRODUCT_DB_PORT="5432"
+export OUR_PRODUCT_DB_NAME="our_product"
+export OUR_PRODUCT_DB_USER="username"
+export OUR_PRODUCT_DB_PASSWORD="password"
+
+# Logging Configuration
+export OUR_PRODUCT_LOG_LEVEL="info"
+export OUR_PRODUCT_LOG_FILE="/var/log/our-product.log"
+```
+
+## Command Line Configuration
+
+### View Current Configuration
+
+```bash
+# View all configuration
+our-product config list
+
+# View specific configuration items
+our-product config get api.key
+our-product config get database.host
+```
+
+### Set Configuration Items
+
+```bash
+# Set single configuration item
+our-product config set api.key "new-api-key"
+our-product config set database.host "new-host"
+
+# Set multiple configuration items
+our-product config set api.key "new-key" database.host "new-host"
+```
+
+### Import Configuration Files
+
+```bash
+# Import configuration from file
+our-product config import config.yaml
+
+# Import from environment variables
+our-product config import --from-env
+```
+
+## Configuration Validation
+
+### Validate Configuration Syntax
+
+```bash
+# Validate configuration file syntax
+our-product config validate
+
+# Test connection configuration
+our-product config test-connection
+```
+
+### Configuration Checklist
+
+- [ ] API key is set
+- [ ] Database connection is working
+- [ ] Log path is writable
+- [ ] SSL certificates are valid (if enabled)
+- [ ] Firewall rules are correct
+- [ ] Network connection is stable
+
+## Advanced Configuration
+
+### Custom Plugins
+
+```yaml
+plugins:
+  - name: "custom-plugin"
+    path: "/path/to/plugin"
+    config:
+      option1: "value1"
+      option2: "value2"
+```
+
+### Performance Tuning
+
+```yaml
+performance:
+  # Cache settings
+  cache:
+    enabled: true
+    size: "1GB"
+    ttl: 3600
+  
+  # Concurrency settings
+  concurrency:
+    max_workers: 10
+    queue_size: 100
+```
+
+## Troubleshooting
+
+### Configuration Issues
+
+#### Issue 1: Invalid Configuration File Format
+**Error Message**: `Invalid YAML format`
+**Solution**: Check YAML syntax and ensure proper indentation
+
+#### Issue 2: Configuration Key Not Found
+**Error Message**: `Configuration key not found`
+**Solution**: Use `our-product config list` to view available configuration items
+
+#### Issue 3: Permission Issues
+**Error Message**: `Permission denied`
+**Solution**: Check read/write permissions for configuration files
+
+## Next Steps
+
+After configuration, we recommend continuing with:
+
+- [API Documentation](./api/) - Complete API reference
+- [Advanced Features](./advanced/) - Advanced configuration and features
+- [Troubleshooting](./advanced/troubleshooting.md) - Common problem solutions
+
+---
+
+_For more help, please check the [API Documentation](./api/) or contact technical support._ 

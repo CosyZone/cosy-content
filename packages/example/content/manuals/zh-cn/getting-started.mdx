@@ -1,0 +1,79 @@
+---
+title: '快速开始'
+description: '5分钟快速上手指南'
+order: 2
+date: 2024-01-01
+draft: false
+hidden: false
+important: true
+badge: '推荐'
+category: 'guide'
+tags: ['getting-started', 'quick-start', 'tutorial']
+---
+
+# {frontmatter.title}
+
+本指南将帮助您在 5 分钟内快速上手我们的产品。
+
+## 前置要求
+
+在开始之前，请确保您的系统满足以下要求：
+
+- Node.js 18.0 或更高版本
+- npm 或 yarn 包管理器
+- 现代浏览器（Chrome、Firefox、Safari、Edge）
+
+## 安装
+
+### 使用 npm
+
+```bash
+npm install our-product
+```
+
+### 使用 yarn
+
+```bash
+yarn add our-product
+```
+
+## 基本使用
+
+### 1. 导入模块
+
+```javascript
+import { Product } from 'our-product';
+```
+
+### 2. 创建实例
+
+```javascript
+const product = new Product({
+  apiKey: 'your-api-key',
+  environment: 'development',
+});
+```
+
+### 3. 开始使用
+
+```javascript
+// 基本功能示例
+const result = await product.initialize();
+console.log('产品初始化成功！', result);
+```
+
+## 下一步
+
+现在您已经完成了基本设置，建议继续阅读：
+
+- [安装指南](./installation.md) - 了解更多安装选项
+- [配置说明](./configuration.md) - 详细配置参数
+- [API 文档](./api/) - 完整的 API 参考
+
+## 示例项目
+
+我们提供了一个完整的示例项目，您可以在 [GitHub](https://github.com/example/demo) 上查看。
+
+---
+
+_如果您在安装过程中遇到问题，请查看 [故障排除](./advanced/troubleshooting.md) 章节。_

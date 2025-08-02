@@ -1,0 +1,383 @@
+---
+title: 'API 认证'
+description: 'API 认证和授权机制详解'
+order: 2
+date: 2024-01-01
+draft: false
+hidden: false
+important: true
+badge: '安全'
+category: 'api'
+tags: ['api', 'authentication', 'authorization', 'security']
+---
+
+# {frontmatter.title}
+
+{frontmatter.description}
+
+## 认证方式
+
+### Bearer Token 认证
+
+这是最常用的认证方式，适用于大多数 API 请求。
+
+#### 获取 Token
+
+```bash
+# 使用用户名密码获取 token
+curl -X POST "https://api.example.com/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "your_username",
+    "password": "your_password"
+  }'
+```
+
+**响应示例：**
+
+```json
+{
+  "success": true,
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expires_in": 3600,
+    "token_type": "Bearer"
+  }
+}
+```
+
+#### 使用 Token
+
+```bash
+# 在请求头中包含 token
+curl -X GET "https://api.example.com/v1/users" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+### API Key 认证
+
+适用于服务器间通信和自动化脚本。
+
+#### 获取 API Key
+
+1. 登录管理控制台
+2. 进入 "API Keys" 页面
+3. 点击 "Create New Key"
+4. 设置权限和过期时间
+
+#### 使用 API Key
+
+```bash
+# 在请求头中包含 API Key
+curl -X GET "https://api.example.com/v1/data" \
+  -H "X-API-Key: sk_live_1234567890abcdef"
+```
+
+### OAuth 2.0 认证
+
+适用于第三方应用集成。
+
+#### 授权流程
+
+```bash
+# 1. 重定向用户到授权页面
+https://api.example.com/v1/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=read,write
+
+# 2. 用户授权后，获取授权码
+# 3. 使用授权码获取访问令牌
+curl -X POST "https://api.example.com/v1/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=authorization_code&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&code=AUTHORIZATION_CODE&redirect_uri=YOUR_REDIRECT_URI"
+```
+
+## 权限控制
+
+### 角色权限
+
+| 角色 | 权限 | 描述 |
+|------|------|------|
+| `admin` | 所有权限 | 管理员，可以执行所有操作 |
+| `user` | `read`, `write` | 普通用户，可以读取和写入数据 |
+| `guest` | `read` | 访客，只能读取公开数据 |
+| `api` | `read`, `write` | API 用户，用于服务器间通信 |
+
+### 资源权限
+
+```json
+{
+  "permissions": {
+    "users": {
+      "read": ["admin", "user"],
+      "write": ["admin"],
+      "delete": ["admin"]
+    },
+    "data": {
+      "read": ["admin", "user", "guest"],
+      "write": ["admin", "user"],
+      "delete": ["admin"]
+    }
+  }
+}
+```
+
+## 安全最佳实践
+
+### Token 管理
+
+#### 1. 安全存储
+
+```javascript
+// 错误示例 - 不要这样做
+localStorage.setItem('token', accessToken);
+
+// 正确示例 - 使用 HttpOnly Cookie
+document.cookie = `token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
+```
+
+#### 2. Token 刷新
+
+```javascript
+// 自动刷新 token
+const refreshToken = async () => {
+  try {
+    const response = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    });
+    
+    const data = await response.json();
+    if (data.success) {
+      // 更新存储的 token
+      updateStoredToken(data.data.access_token);
+    }
+  } catch (error) {
+    // 刷新失败，重定向到登录页
+    redirectToLogin();
+  }
+};
+```
+
+### 请求签名
+
+对于高安全性要求的 API，建议使用请求签名。
+
+```javascript
+// 生成请求签名
+const generateSignature = (method, path, timestamp, body) => {
+  const message = `${method}\n${path}\n${timestamp}\n${body}`;
+  return crypto.createHmac('sha256', secretKey).update(message).digest('hex');
+};
+
+// 发送签名请求
+const makeSignedRequest = async (method, path, data) => {
+  const timestamp = Date.now();
+  const body = JSON.stringify(data);
+  const signature = generateSignature(method, path, timestamp, body);
+  
+  const response = await fetch(`https://api.example.com/v1${path}`, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Timestamp': timestamp,
+      'X-Signature': signature
+    },
+    body
+  });
+  
+  return response.json();
+};
+```
+
+## 错误处理
+
+### 认证错误
+
+| 状态码 | 错误代码 | 描述 | 解决方案 |
+|--------|----------|------|----------|
+| 401 | `INVALID_TOKEN` | Token 无效或已过期 | 重新获取 token |
+| 401 | `MISSING_TOKEN` | 缺少认证信息 | 添加 Authorization 头 |
+| 403 | `INSUFFICIENT_PERMISSIONS` | 权限不足 | 联系管理员提升权限 |
+| 429 | `RATE_LIMIT_EXCEEDED` | 请求频率超限 | 降低请求频率 |
+
+### 错误响应格式
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_TOKEN",
+    "message": "Token 已过期或无效",
+    "details": {
+      "expired_at": "2024-01-01T12:00:00Z",
+      "token_type": "Bearer"
+    }
+  }
+}
+```
+
+## 示例代码
+
+### JavaScript/Node.js
+
+```javascript
+class APIClient {
+  constructor(apiKey) {
+    this.apiKey = apiKey;
+    this.baseURL = 'https://api.example.com/v1';
+  }
+  
+  // 自动处理认证
+  async request(endpoint, options = {}) {
+    const url = `${this.baseURL}${endpoint}`;
+    const headers = {
+      'Authorization': `Bearer ${this.apiKey}`,
+      'Content-Type': 'application/json',
+      ...options.headers
+    };
+    
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers
+      });
+      
+      if (response.status === 401) {
+        // Token 过期，尝试刷新
+        await this.refreshToken();
+        // 重试请求
+        return this.request(endpoint, options);
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  }
+  
+  // 刷新 token
+  async refreshToken() {
+    // 实现 token 刷新逻辑
+  }
+}
+```
+
+### Python
+
+```python
+import requests
+import time
+import hmac
+import hashlib
+
+class AuthenticatedAPIClient:
+    def __init__(self, api_key, secret_key=None):
+        self.api_key = api_key
+        self.secret_key = secret_key
+        self.base_url = 'https://api.example.com/v1'
+        self.session = requests.Session()
+    
+    def _generate_signature(self, method, path, timestamp, body=''):
+        if not self.secret_key:
+            return None
+        
+        message = f"{method}\n{path}\n{timestamp}\n{body}"
+        signature = hmac.new(
+            self.secret_key.encode(),
+            message.encode(),
+            hashlib.sha256
+        ).hexdigest()
+        
+        return signature
+    
+    def request(self, method, endpoint, data=None):
+        url = f"{self.base_url}{endpoint}"
+        headers = {
+            'Authorization': f'Bearer {self.api_key}',
+            'Content-Type': 'application/json'
+        }
+        
+        # 添加签名（如果提供了 secret_key）
+        if self.secret_key:
+            timestamp = str(int(time.time() * 1000))
+            body = '' if data is None else str(data)
+            signature = self._generate_signature(method, endpoint, timestamp, body)
+            
+            headers.update({
+                'X-Timestamp': timestamp,
+                'X-Signature': signature
+            })
+        
+        try:
+            response = self.session.request(
+                method,
+                url,
+                json=data,
+                headers=headers
+            )
+            
+            if response.status_code == 401:
+                # 处理认证错误
+                raise AuthenticationError("Token 无效或已过期")
+            
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            raise APIError(f"请求失败: {e}")
+```
+
+## 安全建议
+
+### 1. 使用 HTTPS
+
+所有 API 请求都应该使用 HTTPS 协议。
+
+### 2. 定期轮换密钥
+
+- API Key: 每 90 天轮换一次
+- Access Token: 1 小时过期
+- Refresh Token: 30 天过期
+
+### 3. 监控异常活动
+
+```javascript
+// 监控失败的认证尝试
+const monitorAuthFailures = (request) => {
+  if (request.status === 401) {
+    // 记录失败的认证尝试
+    logAuthFailure({
+      ip: request.ip,
+      userAgent: request.headers['user-agent'],
+      timestamp: new Date(),
+      endpoint: request.path
+    });
+  }
+};
+```
+
+### 4. 实施速率限制
+
+```yaml
+# 速率限制配置
+rate_limits:
+  authentication:
+    requests_per_minute: 5
+    requests_per_hour: 20
+  api_calls:
+    requests_per_minute: 100
+    requests_per_hour: 1000
+```
+
+## 下一步
+
+认证配置完成后，建议继续阅读：
+
+- [API 端点](./endpoints.md) - 详细的 API 端点文档
+- [错误处理](./error-handling.md) - 完整的错误处理指南
+- [SDK 使用](./sdk-usage.md) - 官方 SDK 使用说明
+
+---
+
+_如有安全问题，请立即联系我们的安全团队。_ 

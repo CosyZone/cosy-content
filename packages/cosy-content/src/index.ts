@@ -4,9 +4,11 @@ export * from './repos/ExperimentRepo.js';
 export * from './repos/LessonRepo.js';
 export * from './repos/MetaRepo.js';
 export * from './repos/CourseRepo.js';
+export * from './repos/ManualRepo.js';
 
 export * from './entities/BaseDoc.js';
 export * from './entities/CourseDoc.js';
+export * from './entities/ManualDoc.js';
 export * from './entities/BlogDoc.js';
 export * from './entities/ExperimentDoc.js';
 export * from './entities/LessonDoc.js';

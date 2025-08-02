@@ -106,3 +106,25 @@ export const makeBlogCollection = (base: string) => {
         }),
     });
 };
+
+export const makeManualCollection = (base: string) => {
+    return defineCollection({
+        loader: glob({
+            pattern: '**/*.{md,mdx}',
+            base,
+        }),
+        schema: z.object({
+            title: z.string().optional(),
+            description: z.string().optional(),
+            folder: z.boolean().optional(),
+            date: z.date().optional(),
+            order: z.number().optional(),
+            badge: z.string().optional(),
+            draft: z.boolean().optional(),
+            hidden: z.boolean().optional(),
+            important: z.boolean().optional(),
+            tags: z.array(z.string()).optional(),
+            category: z.string().optional(),
+        }),
+    });
+};

@@ -1,0 +1,163 @@
+# ManualDoc 使用指南
+
+## 概述
+
+ManualDoc 是专门为展示成体系文档设计的内容类型，适合产品用户手册、技术框架文档、API 文档等场景。
+
+## 特点
+
+- **单一手册概念**：整个仓库只有一个手册，而不是多个课程
+- **多语言支持**：支持 zh-cn、en 等语言版本
+- **层级结构**：支持章节、子章节的层级组织
+- **组件支持**：可以包含 Vue 组件等交互元素
+
+## 目录结构
+
+```
+manuals/
+├── zh-cn/                    # 中文版本
+│   ├── index.md              # 手册首页/概述
+│   ├── getting-started.md    # 快速开始
+│   ├── installation.md       # 安装指南
+│   ├── configuration.md      # 配置说明
+│   ├── advanced/             # 高级主题
+│   │   ├── index.md
+│   │   ├── optimization.md
+│   │   └── troubleshooting.md
+│   ├── api/                  # API 文档
+│   │   ├── index.md
+│   │   ├── authentication.md
+│   │   └── endpoints.md
+│   ├── examples/             # 示例代码
+│   │   ├── index.md
+│   │   ├── basic-usage.md
+│   │   └── advanced-usage.md
+│   ├── components/           # 可复用组件
+│   │   ├── CodeDemo.vue
+│   │   └── ApiTable.vue
+│   └── images/              # 手册相关图片
+│       ├── logo.png
+│       └── screenshots/
+├── en/                      # 英文版本
+│   ├── index.md
+│   ├── getting-started.md
+│   └── ... (同中文结构)
+└── shared/                  # 共享资源
+    ├── components/
+    └── assets/
+```
+
+## 核心文件
+
+### 实体类
+
+- [packages/cosy-content/src/entities/ManualDoc.ts](mdc:packages/cosy-content/src/entities/ManualDoc.ts) - 手册文档实体类
+
+### 仓库类
+
+- [packages/cosy-content/src/repos/ManualRepo.ts](mdc:packages/cosy-content/src/repos/ManualRepo.ts) - 手册仓库管理类
+
+### Schema 定义
+
+- [packages/cosy-content/src/schema.ts](mdc:packages/cosy-content/src/schema.ts) - 包含 `makeManualCollection` 函数
+
+## API 方法
+
+### ManualRepo 主要方法
+
+- `allManualsByLang(lang: string)` - 获取指定语言的所有顶级章节
+- `getImportantManuals(lang: string, count?: number)` - 获取重要章节
+- `getManualsWithTag(lang: string, tag: string)` - 根据标签过滤
+- `getManualsByCategory(lang: string, category: string)` - 根据分类过滤
+- `getManualStructure(lang: string)` - 获取手册的完整目录结构
+- `getStaticPaths()` - 获取静态路由参数
+
+### ManualDoc 主要方法
+
+- `isChapter()` - 判断是否为顶级章节
+- `isImportant()` - 判断是否为重要章节
+- `isFolder()` - 判断是否为文件夹
+- `getOrder()` - 获取排序值
+- `getCategory()` - 获取分类
+- `getTags()` - 获取标签
+- `getBadge()` - 获取徽章
+
+## 配置示例
+
+### content.config.ts
+
+```typescript
+import { makeManualCollection } from '@coffic/cosy-content/schema';
+
+export const collections = {
+  manuals: makeManualCollection('./content/manuals'),
+};
+```
+
+### 页面组件
+
+```typescript
+import { manualRepo } from '@coffic/cosy-content';
+
+// 获取所有手册章节
+const manuals = await manualRepo.allManualsByLang('zh-cn');
+
+// 获取重要章节
+const importantManuals = await manualRepo.getImportantManuals('zh-cn', 4);
+```
+
+## 最佳实践
+
+### 1. 内容组织
+
+- 使用清晰的章节结构
+- 每个章节都有明确的 `order` 值
+- 重要章节设置 `important: true`
+- 使用 `badge` 标识特殊状态
+
+### 2. 多语言支持
+
+- 保持中英文内容结构一致
+- 使用相同的文件名和路径
+- 确保翻译的完整性和准确性
+
+### 3. 组件使用
+
+- 在 `components/` 目录下放置可复用组件
+- 使用 Vue 组件增强交互性
+- 保持组件的独立性和可复用性
+
+### 4. 图片管理
+
+- 在 `images/` 目录下组织图片资源
+- 使用相对路径引用图片
+- 优化图片大小和格式
+
+## 与 Course 的区别
+
+| 特性     | ManualDoc          | CourseDoc                |
+| -------- | ------------------ | ------------------------ |
+| 内容数量 | 单一手册           | 多个课程                 |
+| 目录结构 | `manuals/zh-cn/`   | `courses/zh-cn/course1/` |
+| 适用场景 | 产品手册、API 文档 | 技术课程、学习教程       |
+| 组织方式 | 按章节组织         | 按课程组织               |
+
+## 常见问题
+
+### Q: 如何添加新的手册章节？
+
+A: 在 `manuals/zh-cn/` 目录下创建新的 `.md` 文件，设置正确的 frontmatter。
+
+### Q: 如何设置章节顺序？
+
+A: 在 frontmatter 中使用 `order` 字段，数值越小排序越靠前。
+
+### Q: 如何标记重要章节？
+
+A: 在 frontmatter 中设置 `important: true`。
+
+### Q: 如何添加徽章？
+
+A: 在 frontmatter 中设置 `badge: "推荐"` 或 `badge: "新功能"`。 description: globs: alwaysApply: false
+
+---

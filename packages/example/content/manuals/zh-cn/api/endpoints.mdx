@@ -1,0 +1,554 @@
+---
+title: 'API 端点'
+description: '完整的 API 端点参考文档'
+order: 3
+date: 2024-01-01
+draft: false
+hidden: false
+important: true
+badge: '参考'
+category: 'api'
+tags: ['api', 'endpoints', 'reference', 'rest']
+---
+
+# {frontmatter.title}
+
+本文档提供了完整的 API 端点参考，包括所有可用的端点、参数、响应格式和示例。
+
+## 基础信息
+
+### API 版本
+- **当前版本**: v1.0
+- **基础 URL**: `https://api.example.com/v1`
+- **数据格式**: JSON
+- **字符编码**: UTF-8
+
+### 通用参数
+
+#### 分页参数
+```bash
+?page=1&limit=20&offset=0
+```
+
+#### 排序参数
+```bash
+?sort=created_at&order=desc
+```
+
+#### 过滤参数
+```bash
+?filter[status]=active&filter[type]=user
+```
+
+## 用户管理端点
+
+### 获取用户列表
+
+**端点**: `GET /users`
+
+**描述**: 获取用户列表，支持分页和过滤。
+
+**参数**:
+| 参数 | 类型 | 必需 | 描述 |
+|------|------|------|------|
+| `page` | integer | 否 | 页码，默认 1 |
+| `limit` | integer | 否 | 每页数量，默认 20，最大 100 |
+| `status` | string | 否 | 用户状态过滤 |
+| `role` | string | 否 | 用户角色过滤 |
+| `search` | string | 否 | 搜索用户名或邮箱 |
+
+**请求示例**:
+```bash
+curl -X GET "https://api.example.com/v1/users?page=1&limit=10&status=active" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "username": "john_doe",
+        "email": "john@example.com",
+        "status": "active",
+        "role": "user",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 10,
+      "total": 100,
+      "pages": 10
+    }
+  }
+}
+```
+
+### 获取单个用户
+
+**端点**: `GET /users/{id}`
+
+**描述**: 根据用户 ID 获取用户详细信息。
+
+**路径参数**:
+| 参数 | 类型 | 描述 |
+|------|------|------|
+| `id` | integer | 用户 ID |
+
+**请求示例**:
+```bash
+curl -X GET "https://api.example.com/v1/users/1" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "status": "active",
+    "role": "user",
+    "profile": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "avatar": "https://example.com/avatars/john.jpg"
+    },
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z"
+  }
+}
+```
+
+### 创建用户
+
+**端点**: `POST /users`
+
+**描述**: 创建新用户。
+
+**请求体**:
+```json
+{
+  "username": "new_user",
+  "email": "newuser@example.com",
+  "password": "secure_password",
+  "role": "user",
+  "profile": {
+    "first_name": "New",
+    "last_name": "User"
+  }
+}
+```
+
+**请求示例**:
+```bash
+curl -X POST "https://api.example.com/v1/users" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "new_user",
+    "email": "newuser@example.com",
+    "password": "secure_password",
+    "role": "user"
+  }'
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": 2,
+    "username": "new_user",
+    "email": "newuser@example.com",
+    "status": "active",
+    "role": "user",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  "message": "用户创建成功"
+}
+```
+
+### 更新用户
+
+**端点**: `PUT /users/{id}`
+
+**描述**: 更新用户信息。
+
+**请求示例**:
+```bash
+curl -X PUT "https://api.example.com/v1/users/1" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "updated@example.com",
+    "profile": {
+      "first_name": "Updated",
+      "last_name": "Name"
+    }
+  }'
+```
+
+### 删除用户
+
+**端点**: `DELETE /users/{id}`
+
+**描述**: 删除用户（软删除）。
+
+**请求示例**:
+```bash
+curl -X DELETE "https://api.example.com/v1/users/1" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## 数据管理端点
+
+### 获取数据列表
+
+**端点**: `GET /data`
+
+**描述**: 获取数据列表，支持复杂的过滤和排序。
+
+**参数**:
+| 参数 | 类型 | 描述 |
+|------|------|------|
+| `page` | integer | 页码 |
+| `limit` | integer | 每页数量 |
+| `category` | string | 数据分类 |
+| `status` | string | 数据状态 |
+| `date_from` | string | 开始日期 (YYYY-MM-DD) |
+| `date_to` | string | 结束日期 (YYYY-MM-DD) |
+| `sort` | string | 排序字段 |
+| `order` | string | 排序方向 (asc/desc) |
+
+**请求示例**:
+```bash
+curl -X GET "https://api.example.com/v1/data?category=analytics&status=published&sort=created_at&order=desc" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+### 获取单个数据
+
+**端点**: `GET /data/{id}`
+
+**描述**: 获取特定数据的详细信息。
+
+**请求示例**:
+```bash
+curl -X GET "https://api.example.com/v1/data/123" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+### 创建数据
+
+**端点**: `POST /data`
+
+**描述**: 创建新的数据记录。
+
+**请求体**:
+```json
+{
+  "title": "新数据标题",
+  "content": "数据内容",
+  "category": "analytics",
+  "tags": ["tag1", "tag2"],
+  "metadata": {
+    "source": "api",
+    "version": "1.0"
+  }
+}
+```
+
+### 批量操作
+
+**端点**: `POST /data/batch`
+
+**描述**: 批量创建或更新数据。
+
+**请求体**:
+```json
+{
+  "operation": "create",
+  "data": [
+    {
+      "title": "数据1",
+      "content": "内容1"
+    },
+    {
+      "title": "数据2",
+      "content": "内容2"
+    }
+  ]
+}
+```
+
+## 文件管理端点
+
+### 上传文件
+
+**端点**: `POST /files/upload`
+
+**描述**: 上传文件到服务器。
+
+**请求示例**:
+```bash
+curl -X POST "https://api.example.com/v1/files/upload" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -F "file=@/path/to/file.jpg" \
+  -F "category=images" \
+  -F "description=用户头像"
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "file_123",
+    "filename": "avatar.jpg",
+    "url": "https://cdn.example.com/files/avatar.jpg",
+    "size": 1024000,
+    "mime_type": "image/jpeg",
+    "created_at": "2024-01-01T00:00:00Z"
+  }
+}
+```
+
+### 获取文件信息
+
+**端点**: `GET /files/{id}`
+
+**描述**: 获取文件详细信息。
+
+### 删除文件
+
+**端点**: `DELETE /files/{id}`
+
+**描述**: 删除文件。
+
+## 搜索端点
+
+### 全局搜索
+
+**端点**: `GET /search`
+
+**描述**: 在所有资源中进行全文搜索。
+
+**参数**:
+| 参数 | 类型 | 描述 |
+|------|------|------|
+| `q` | string | 搜索关键词 |
+| `type` | string | 搜索类型 (users, data, files) |
+| `page` | integer | 页码 |
+| `limit` | integer | 每页数量 |
+
+**请求示例**:
+```bash
+curl -X GET "https://api.example.com/v1/search?q=john&type=users" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "data": {
+    "query": "john",
+    "total": 5,
+    "results": [
+      {
+        "type": "user",
+        "id": 1,
+        "title": "John Doe",
+        "snippet": "用户 John Doe 的信息...",
+        "score": 0.95
+      }
+    ]
+  }
+}
+```
+
+## 统计端点
+
+### 获取统计数据
+
+**端点**: `GET /stats`
+
+**描述**: 获取系统统计数据。
+
+**参数**:
+| 参数 | 类型 | 描述 |
+|------|------|------|
+| `period` | string | 统计周期 (day, week, month, year) |
+| `type` | string | 统计类型 (users, data, files) |
+
+**请求示例**:
+```bash
+curl -X GET "https://api.example.com/v1/stats?period=month&type=users" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+**响应示例**:
+```json
+{
+  "success": true,
+  "data": {
+    "period": "month",
+    "type": "users",
+    "total": 1250,
+    "growth": 15.5,
+    "trend": [
+      {
+        "date": "2024-01-01",
+        "count": 1200
+      },
+      {
+        "date": "2024-01-02",
+        "count": 1250
+      }
+    ]
+  }
+}
+```
+
+## 错误处理
+
+### 常见错误码
+
+| 状态码 | 错误代码 | 描述 |
+|--------|----------|------|
+| 400 | `VALIDATION_ERROR` | 请求参数验证失败 |
+| 401 | `UNAUTHORIZED` | 未授权访问 |
+| 403 | `FORBIDDEN` | 禁止访问 |
+| 404 | `NOT_FOUND` | 资源不存在 |
+| 409 | `CONFLICT` | 资源冲突 |
+| 422 | `UNPROCESSABLE_ENTITY` | 无法处理的实体 |
+| 429 | `RATE_LIMIT_EXCEEDED` | 请求频率超限 |
+| 500 | `INTERNAL_SERVER_ERROR` | 服务器内部错误 |
+
+### 错误响应格式
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "请求参数验证失败",
+    "details": [
+      {
+        "field": "email",
+        "message": "邮箱格式不正确"
+      },
+      {
+        "field": "password",
+        "message": "密码长度至少为 8 位"
+      }
+    ]
+  }
+}
+```
+
+## 速率限制
+
+### 限制规则
+
+| 端点类型 | 限制 | 时间窗口 |
+|----------|------|----------|
+| 认证端点 | 5 次/分钟 | 1 分钟 |
+| 用户端点 | 100 次/分钟 | 1 分钟 |
+| 数据端点 | 1000 次/分钟 | 1 分钟 |
+| 文件端点 | 10 次/分钟 | 1 分钟 |
+
+### 速率限制响应
+
+当超过速率限制时，API 会返回 429 状态码：
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "请求频率超限",
+    "details": {
+      "limit": 100,
+      "remaining": 0,
+      "reset_time": "2024-01-01T12:01:00Z"
+    }
+  }
+}
+```
+
+## 最佳实践
+
+### 1. 使用适当的 HTTP 方法
+
+- `GET`: 获取数据
+- `POST`: 创建数据
+- `PUT`: 更新数据（完整更新）
+- `PATCH`: 部分更新数据
+- `DELETE`: 删除数据
+
+### 2. 正确处理分页
+
+```javascript
+// 获取所有数据（分页处理）
+const getAllData = async () => {
+  let allData = [];
+  let page = 1;
+  let hasMore = true;
+  
+  while (hasMore) {
+    const response = await fetch(`/api/data?page=${page}&limit=100`);
+    const data = await response.json();
+    
+    allData = allData.concat(data.data.items);
+    hasMore = data.data.pagination.page < data.data.pagination.pages;
+    page++;
+  }
+  
+  return allData;
+};
+```
+
+### 3. 实现重试机制
+
+```javascript
+const apiRequest = async (url, options, retries = 3) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      
+      if (response.status === 429) {
+        // 等待后重试
+        const retryAfter = response.headers.get('Retry-After');
+        await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      if (i === retries - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+};
+```
+
+## 下一步
+
+了解端点后，建议继续阅读：
+
+- [错误处理](./error-handling.md) - 详细的错误处理指南
+- [SDK 使用](./sdk-usage.md) - 官方 SDK 使用说明
+- [最佳实践](./best-practices.md) - API 使用最佳实践
+
+---
+
+_如需更多帮助，请查看 [API 文档索引](./index.md) 或联系技术支持。_ 

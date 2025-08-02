@@ -1,0 +1,79 @@
+---
+title: 'Getting Started'
+description: '5-minute quick start guide'
+order: 2
+date: 2024-01-01
+draft: false
+hidden: false
+important: true
+badge: 'Recommended'
+category: 'guide'
+tags: ['getting-started', 'quick-start', 'tutorial']
+---
+
+# {frontmatter.title}
+
+This guide will help you get started with our product in 5 minutes.
+
+## Prerequisites
+
+Before you begin, make sure your system meets the following requirements:
+
+- Node.js 18.0 or higher
+- npm or yarn package manager
+- Modern browser (Chrome, Firefox, Safari, Edge)
+
+## Installation
+
+### Using npm
+
+```bash
+npm install our-product
+```
+
+### Using yarn
+
+```bash
+yarn add our-product
+```
+
+## Basic Usage
+
+### 1. Import the module
+
+```javascript
+import { Product } from 'our-product';
+```
+
+### 2. Create an instance
+
+```javascript
+const product = new Product({
+  apiKey: 'your-api-key',
+  environment: 'development',
+});
+```
+
+### 3. Start using
+
+```javascript
+// Basic functionality example
+const result = await product.initialize();
+console.log('Product initialized successfully!', result);
+```
+
+## Next Steps
+
+Now that you've completed the basic setup, we recommend continuing with:
+
+- [Installation Guide](./installation.md) - Learn more installation options
+- [Configuration Guide](./configuration.md) - Detailed configuration parameters
+- [API Documentation](./api/) - Complete API reference
+
+## Example Project
+
+We provide a complete example project that you can view on [GitHub](https://github.com/example/demo).
+
+---
+
+_If you encounter any issues during installation, please check the [Troubleshooting](./advanced/troubleshooting.md) section._ 

@@ -1,0 +1,383 @@
+---
+title: 'API Authentication'
+description: 'Detailed API authentication and authorization mechanisms'
+order: 2
+date: 2024-01-01
+draft: false
+hidden: false
+important: true
+badge: 'Security'
+category: 'api'
+tags: ['api', 'authentication', 'authorization', 'security']
+---
+
+# {frontmatter.title}
+
+This document provides detailed information about our API authentication and authorization mechanisms, including various authentication methods and security best practices.
+
+## Authentication Methods
+
+### Bearer Token Authentication
+
+This is the most commonly used authentication method, suitable for most API requests.
+
+#### Obtaining a Token
+
+```bash
+# Get token using username and password
+curl -X POST "https://api.example.com/v1/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "your_username",
+    "password": "your_password"
+  }'
+```
+
+**Response Example:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expires_in": 3600,
+    "token_type": "Bearer"
+  }
+}
+```
+
+#### Using the Token
+
+```bash
+# Include token in request header
+curl -X GET "https://api.example.com/v1/users" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+### API Key Authentication
+
+Suitable for server-to-server communication and automation scripts.
+
+#### Obtaining an API Key
+
+1. Log into the management console
+2. Navigate to the "API Keys" page
+3. Click "Create New Key"
+4. Set permissions and expiration time
+
+#### Using API Key
+
+```bash
+# Include API Key in request header
+curl -X GET "https://api.example.com/v1/data" \
+  -H "X-API-Key: sk_live_1234567890abcdef"
+```
+
+### OAuth 2.0 Authentication
+
+Suitable for third-party application integration.
+
+#### Authorization Flow
+
+```bash
+# 1. Redirect user to authorization page
+https://api.example.com/v1/oauth/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=read,write
+
+# 2. After user authorization, get authorization code
+# 3. Use authorization code to get access token
+curl -X POST "https://api.example.com/v1/oauth/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=authorization_code&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&code=AUTHORIZATION_CODE&redirect_uri=YOUR_REDIRECT_URI"
+```
+
+## Permission Control
+
+### Role Permissions
+
+| Role | Permissions | Description |
+|------|-------------|-------------|
+| `admin` | All permissions | Administrator, can perform all operations |
+| `user` | `read`, `write` | Regular user, can read and write data |
+| `guest` | `read` | Guest, can only read public data |
+| `api` | `read`, `write` | API user, for server-to-server communication |
+
+### Resource Permissions
+
+```json
+{
+  "permissions": {
+    "users": {
+      "read": ["admin", "user"],
+      "write": ["admin"],
+      "delete": ["admin"]
+    },
+    "data": {
+      "read": ["admin", "user", "guest"],
+      "write": ["admin", "user"],
+      "delete": ["admin"]
+    }
+  }
+}
+```
+
+## Security Best Practices
+
+### Token Management
+
+#### 1. Secure Storage
+
+```javascript
+// Wrong example - don't do this
+localStorage.setItem('token', accessToken);
+
+// Correct example - use HttpOnly Cookie
+document.cookie = `token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
+```
+
+#### 2. Token Refresh
+
+```javascript
+// Auto refresh token
+const refreshToken = async () => {
+  try {
+    const response = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    });
+    
+    const data = await response.json();
+    if (data.success) {
+      // Update stored token
+      updateStoredToken(data.data.access_token);
+    }
+  } catch (error) {
+    // Refresh failed, redirect to login
+    redirectToLogin();
+  }
+};
+```
+
+### Request Signing
+
+For high-security API requirements, request signing is recommended.
+
+```javascript
+// Generate request signature
+const generateSignature = (method, path, timestamp, body) => {
+  const message = `${method}\n${path}\n${timestamp}\n${body}`;
+  return crypto.createHmac('sha256', secretKey).update(message).digest('hex');
+};
+
+// Send signed request
+const makeSignedRequest = async (method, path, data) => {
+  const timestamp = Date.now();
+  const body = JSON.stringify(data);
+  const signature = generateSignature(method, path, timestamp, body);
+  
+  const response = await fetch(`https://api.example.com/v1${path}`, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Timestamp': timestamp,
+      'X-Signature': signature
+    },
+    body
+  });
+  
+  return response.json();
+};
+```
+
+## Error Handling
+
+### Authentication Errors
+
+| Status Code | Error Code | Description | Solution |
+|-------------|------------|-------------|----------|
+| 401 | `INVALID_TOKEN` | Token invalid or expired | Re-obtain token |
+| 401 | `MISSING_TOKEN` | Missing authentication | Add Authorization header |
+| 403 | `INSUFFICIENT_PERMISSIONS` | Insufficient permissions | Contact admin for permission upgrade |
+| 429 | `RATE_LIMIT_EXCEEDED` | Request rate exceeded | Reduce request frequency |
+
+### Error Response Format
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_TOKEN",
+    "message": "Token expired or invalid",
+    "details": {
+      "expired_at": "2024-01-01T12:00:00Z",
+      "token_type": "Bearer"
+    }
+  }
+}
+```
+
+## Example Code
+
+### JavaScript/Node.js
+
+```javascript
+class APIClient {
+  constructor(apiKey) {
+    this.apiKey = apiKey;
+    this.baseURL = 'https://api.example.com/v1';
+  }
+  
+  // Auto handle authentication
+  async request(endpoint, options = {}) {
+    const url = `${this.baseURL}${endpoint}`;
+    const headers = {
+      'Authorization': `Bearer ${this.apiKey}`,
+      'Content-Type': 'application/json',
+      ...options.headers
+    };
+    
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers
+      });
+      
+      if (response.status === 401) {
+        // Token expired, try to refresh
+        await this.refreshToken();
+        // Retry request
+        return this.request(endpoint, options);
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  }
+  
+  // Refresh token
+  async refreshToken() {
+    // Implement token refresh logic
+  }
+}
+```
+
+### Python
+
+```python
+import requests
+import time
+import hmac
+import hashlib
+
+class AuthenticatedAPIClient:
+    def __init__(self, api_key, secret_key=None):
+        self.api_key = api_key
+        self.secret_key = secret_key
+        self.base_url = 'https://api.example.com/v1'
+        self.session = requests.Session()
+    
+    def _generate_signature(self, method, path, timestamp, body=''):
+        if not self.secret_key:
+            return None
+        
+        message = f"{method}\n{path}\n{timestamp}\n{body}"
+        signature = hmac.new(
+            self.secret_key.encode(),
+            message.encode(),
+            hashlib.sha256
+        ).hexdigest()
+        
+        return signature
+    
+    def request(self, method, endpoint, data=None):
+        url = f"{self.base_url}{endpoint}"
+        headers = {
+            'Authorization': f'Bearer {self.api_key}',
+            'Content-Type': 'application/json'
+        }
+        
+        # Add signature (if secret_key provided)
+        if self.secret_key:
+            timestamp = str(int(time.time() * 1000))
+            body = '' if data is None else str(data)
+            signature = self._generate_signature(method, endpoint, timestamp, body)
+            
+            headers.update({
+                'X-Timestamp': timestamp,
+                'X-Signature': signature
+            })
+        
+        try:
+            response = self.session.request(
+                method,
+                url,
+                json=data,
+                headers=headers
+            )
+            
+            if response.status_code == 401:
+                # Handle authentication error
+                raise AuthenticationError("Token invalid or expired")
+            
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            raise APIError(f"Request failed: {e}")
+```
+
+## Security Recommendations
+
+### 1. Use HTTPS
+
+All API requests should use HTTPS protocol.
+
+### 2. Regular Key Rotation
+
+- API Key: Rotate every 90 days
+- Access Token: Expire in 1 hour
+- Refresh Token: Expire in 30 days
+
+### 3. Monitor Anomalous Activity
+
+```javascript
+// Monitor failed authentication attempts
+const monitorAuthFailures = (request) => {
+  if (request.status === 401) {
+    // Log failed authentication attempts
+    logAuthFailure({
+      ip: request.ip,
+      userAgent: request.headers['user-agent'],
+      timestamp: new Date(),
+      endpoint: request.path
+    });
+  }
+};
+```
+
+### 4. Implement Rate Limiting
+
+```yaml
+# Rate limiting configuration
+rate_limits:
+  authentication:
+    requests_per_minute: 5
+    requests_per_hour: 20
+  api_calls:
+    requests_per_minute: 100
+    requests_per_hour: 1000
+```
+
+## Next Steps
+
+After configuring authentication, we recommend continuing with:
+
+- [API Endpoints](./endpoints.md) - Detailed API endpoint documentation
+- [Error Handling](./error-handling.md) - Complete error handling guide
+- [SDK Usage](./sdk-usage.md) - Official SDK usage instructions
+
+---
+
+_For security issues, please contact our security team immediately._ 

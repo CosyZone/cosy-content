@@ -1,0 +1,72 @@
+# Cosy Content 项目结构指南
+
+## 项目概述
+
+这是一个用于管理多种类型内容的 TypeScript 库，支持博客、课程、实验、手册等多种内容类型。
+
+## 核心文件结构
+
+### 实体类 (Entities)
+
+- [packages/cosy-content/src/entities/BaseDoc.ts](mdc:packages/cosy-content/src/entities/BaseDoc.ts) - 所有文档类型的基类
+- [packages/cosy-content/src/entities/BlogDoc.ts](mdc:packages/cosy-content/src/entities/BlogDoc.ts) - 博客文档实体
+- [packages/cosy-content/src/entities/CourseDoc.ts](mdc:packages/cosy-content/src/entities/CourseDoc.ts) - 课程文档实体
+- [packages/cosy-content/src/entities/ManualDoc.ts](mdc:packages/cosy-content/src/entities/ManualDoc.ts) - 手册文档实体
+- [packages/cosy-content/src/entities/LessonDoc.ts](mdc:packages/cosy-content/src/entities/LessonDoc.ts) - 课程文档实体
+- [packages/cosy-content/src/entities/ExperimentDoc.ts](mdc:packages/cosy-content/src/entities/ExperimentDoc.ts) - 实验文档实体
+
+### 仓库类 (Repos)
+
+- [packages/cosy-content/src/repos/BaseRepo.ts](mdc:packages/cosy-content/src/repos/BaseRepo.ts) - 基础仓库类
+- [packages/cosy-content/src/repos/BlogRepo.ts](mdc:packages/cosy-content/src/repos/BlogRepo.ts) - 博客仓库
+- [packages/cosy-content/src/repos/CourseRepo.ts](mdc:packages/cosy-content/src/repos/CourseRepo.ts) - 课程仓库
+- [packages/cosy-content/src/repos/ManualRepo.ts](mdc:packages/cosy-content/src/repos/ManualRepo.ts) - 手册仓库
+- [packages/cosy-content/src/repos/LessonRepo.ts](mdc:packages/cosy-content/src/repos/LessonRepo.ts) - 课程仓库
+- [packages/cosy-content/src/repos/ExperimentRepo.ts](mdc:packages/cosy-content/src/repos/ExperimentRepo.ts) - 实验仓库
+
+### 工具类 (Utils)
+
+- [packages/cosy-content/src/utils/link.ts](mdc:packages/cosy-content/src/utils/link.ts) - 链接生成工具
+- [packages/cosy-content/src/schema.ts](mdc:packages/cosy-content/src/schema.ts) - 内容集合 Schema 定义
+
+### 入口文件
+
+- [packages/cosy-content/src/index.ts](mdc:packages/cosy-content/src/index.ts) - 主入口文件，导出所有类型
+
+## 内容类型说明
+
+### ManualDoc (手册文档)
+
+- 特点：整个仓库只有一个手册，适合展示成体系的文档
+- 目录结构：`manuals/zh-cn/` 或 `manuals/en/`
+- 适用场景：产品用户手册、技术框架文档、API 文档
+
+### CourseDoc (课程文档)
+
+- 特点：支持多个课程，每个语言目录下有多个课程文件夹
+- 目录结构：`courses/zh-cn/course1/` 或 `courses/en/course1/`
+- 适用场景：技术课程、学习教程
+
+### BlogDoc (博客文档)
+
+- 特点：独立的博客文章，支持标签和分类
+- 目录结构：`blogs/zh-cn/` 或 `blogs/en/`
+- 适用场景：技术博客、文章发布
+
+## 开发规范
+
+### 添加新的内容类型
+
+1. 创建实体类：继承 `BaseDoc`，实现 `SidebarProvider`
+2. 创建仓库类：继承 `BaseDB`，提供 CRUD 操作
+3. 更新 Schema：在 [packages/cosy-content/src/schema.ts](mdc:packages/cosy-content/src/schema.ts) 中添加集合定义
+4. 更新链接工具：在 [packages/cosy-content/src/utils/link.ts](mdc:packages/cosy-content/src/utils/link.ts) 中添加链接生成方法
+5. 更新入口文件：在 [packages/cosy-content/src/index.ts](mdc:packages/cosy-content/src/index.ts) 中导出新类型
+
+### 构建和测试
+
+- 使用 `pnpm build:content` 构建 cosy-content 包
+- 使用 `pnpm build` 构建示例项目
+- 确保 TypeScript 类型检查通过 description: globs: alwaysApply: false
+
+---

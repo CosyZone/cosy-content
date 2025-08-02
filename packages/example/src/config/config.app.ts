@@ -33,6 +33,10 @@ export const AppConfig = {
                 href: LinkConfig.getBlogsLink(lang),
                 title: lang === 'zh-cn' ? '博客' : 'Blogs',
             },
+            {
+                href: LinkConfig.getManualsLink(lang),
+                title: lang === 'zh-cn' ? '手册' : 'Manuals',
+            },
         ]
     },
 

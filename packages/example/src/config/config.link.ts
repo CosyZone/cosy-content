@@ -44,6 +44,10 @@ export default class LinkConfig {
         return `/${lang}/blogs`;
     }
 
+    static getManualsLink(lang: string): string {
+        return `/${lang}/manuals`;
+    }
+
     static getLessonLink(lang: string, lessonId: string): string {
         if (lessonId.endsWith(lang)) {
             return `/${lang}/lessons/${lessonId.replace(`${lang}`, '')}`;
