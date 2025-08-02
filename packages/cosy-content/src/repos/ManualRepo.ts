@@ -72,16 +72,16 @@ class ManualRepo extends BaseDB<
      *
      * @returns 返回路径参数数组
      */
-    async getStaticPaths(): Promise<
-        { params: { lang: string; slug: string } }[]
-    > {
+    async getStaticPaths() {
         const entries = await getCollection(COLLECTION_MANUAL);
         return entries.map((entry: ManualEntry) => {
             const doc = new ManualDoc(entry);
+            const slug = doc.getSlug();
             return {
                 params: {
                     lang: doc.getLang(),
-                    slug: doc.getSlug(),
+                    // 当 slug 为空字符串时，设置为 undefined 以符合 Astro 可选参数的要求
+                    ...(slug ? { slug } : {}),
                 },
             };
         });

@@ -89,7 +89,8 @@ class ExperimentRepo extends BaseDB<
             return {
                 params: {
                     lang: lang,
-                    slug: slug,
+                    // 当 slug 为空字符串时，设置为 undefined 以符合 Astro 可选参数的要求
+                    ...(slug ? { slug } : {}),
                 },
             };
         });

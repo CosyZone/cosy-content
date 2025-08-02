@@ -259,10 +259,12 @@ export abstract class BaseDB<
         const docs = await this.getDescendantDocs('');
         const paths = docs.map((doc) => {
             const docWithMethods = doc as any;
+            const slug = docWithMethods.getSlug?.() || '';
             return {
                 params: {
                     lang: docWithMethods.getLang?.() || '',
-                    slug: docWithMethods.getSlug?.() || '',
+                    // 当 slug 为空字符串时，设置为 undefined 以符合 Astro 可选参数的要求
+                    ...(slug ? { slug } : {}),
                 },
             };
         });

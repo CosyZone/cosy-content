@@ -54,10 +54,12 @@ class MetaRepo extends BaseDB<typeof COLLECTION_META, MetaEntry, MetaDoc> {
         const docs = await this.getDescendantDocs('');
 
         const paths = docs.map((doc) => {
+            const slug = doc.getSlug();
             return {
                 params: {
                     lang: doc.getLang(),
-                    slug: doc.getSlug(),
+                    // 当 slug 为空字符串时，设置为 undefined 以符合 Astro 可选参数的要求
+                    ...(slug ? { slug } : {}),
                 },
             };
         });
