@@ -234,16 +234,18 @@ export class CourseDoc extends BaseDoc implements SidebarProvider {
       childItems = [...childItems];
     }
 
-    if (debug) {
-      cosyLogger.info(`${this.entry.id} 的侧边栏项目`);
-      console.log(childItems);
-    }
-
-    return new SidebarItemEntity({
+    const sidebarItem = new SidebarItemEntity({
       text: this.getTitle(),
       items: childItems,
       link: this.getLink(),
       badge: this.entry.data.badge,
     });
+
+    if (debug) {
+      cosyLogger.info(`${this.entry.id} 转换成侧边栏项目`);
+      console.log(sidebarItem);
+    }
+
+    return sidebarItem;
   }
 }

@@ -8,34 +8,37 @@ import { courseRepo } from '@coffic/cosy-content';
 export const prerender = true;
 
 export async function getStaticPaths() {
-    return [
-        {
-            params: {
-                lang: '/zh-cn',
-            },
-        },
-        {
-            params: {
-                lang: '/en',
-            },
-        },
-    ];
+  return [
+    {
+      params: {
+        lang: '/zh-cn',
+      },
+    },
+    {
+      params: {
+        lang: '/en',
+      },
+    },
+  ];
 }
 
 const { lang } = Astro.params;
-const courses = (await courseRepo.allCoursesByLang(lang)).filter(course => course.isNotHidden());
+console.log(lang);
+const courses = (await courseRepo.allCoursesByLang(lang)).filter((course) =>
+  course.isNotHidden()
+);
 const title = lang === 'zh-cn' ? '课程列表' : 'Courses List';
 const description = lang === 'zh-cn' ? '课程列表' : 'Courses List';
 ---
 
 <AppLayout title={title} description={description}>
-    <Container size="xl">
-        <Grid cols={4} gap="xs">
-            {
-                courses.map(course => (
-                    <CardCourse title={course.getTitle()} link={course.getLink()} />
-                ))
-            }
-        </Grid>
-    </Container>
+  <Container size="xl">
+    <Grid cols={4} gap="xs">
+      {
+        courses.map((course) => (
+          <CardCourse title={course.getTitle()} link={course.getLink()} />
+        ))
+      }
+    </Grid>
+  </Container>
 </AppLayout>

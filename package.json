@@ -8,7 +8,7 @@
     "build:content": "pnpm --filter @coffic/cosy-content build",
     "build:example": "pnpm build:content && pnpm --filter example build",
     "build:cloudflare": "pnpm build:content && pnpm --filter example-cloudflare build",
-    "dev": "pnpm --filter example dev"
+    "dev": "pnpm build:content && pnpm --filter example dev"
   },
   "packageManager": "pnpm@10.12.1",
   "engines": {
