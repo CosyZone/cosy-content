@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm -r build",
-    "build:content": "pnpm --filter @coffic/cosy-content build",
+    "build:content": "pnpm --filter @coffic/cosy-content build:dev",
     "build:example": "pnpm build:content && pnpm --filter example build",
     "build:cloudflare": "pnpm build:content && pnpm --filter example-cloudflare build",
     "dev": "pnpm build:content && pnpm --filter example dev"

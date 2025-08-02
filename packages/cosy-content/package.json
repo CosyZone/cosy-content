@@ -43,6 +43,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "build:dev": "tsc --sourceMap",
     "prepublishOnly": "pnpm build"
   },
   "type": "module",
