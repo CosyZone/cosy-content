@@ -1,6 +1,5 @@
 import { makeBlogCollection, makeMetaCollection, makeCourseCollection, makeLessonCollection, makeExperimentCollection, makeManualCollection } from "@coffic/cosy-content/schema";
 
-
 export const collections = {
     blogs: makeBlogCollection('./content/blogs'),
     meta: makeMetaCollection('./content/meta'),

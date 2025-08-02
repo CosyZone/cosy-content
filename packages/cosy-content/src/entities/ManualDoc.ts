@@ -185,7 +185,16 @@ export class ManualDoc extends BaseDoc implements SidebarProvider {
     }
 
     getLink(): string {
-        return LinkUtil.getManualLink(this.entry.id);
+        const debug = false;
+        const id = this.getId();
+        const lang = id.split('/')[0];
+        const manualIdWithoutLang = id === lang ? '' : id.replace(`${lang}/`, '');
+
+        if (debug) {
+            cosyLogger.info(`获取手册文档链接，手册文档ID: ${this.entry.id}`);
+        }
+
+        return `/${lang}/manuals/${manualIdWithoutLang}`;
     }
 
     getDate(): Date {

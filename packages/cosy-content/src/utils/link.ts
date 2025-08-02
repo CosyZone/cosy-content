@@ -77,16 +77,7 @@ export class LinkUtil {
     return `/${lang}/blogs/tag/${tagName}`;
   }
 
-  static getBlogLink(blogId: string, lang: string): string {
-    const debug = false;
-    const blogIdWithoutLang = blogId.replace(`${lang}/`, '');
 
-    if (debug) {
-      cosyLogger.info(`获取博客文档链接，博客文档ID: ${blogId}`);
-    }
-
-    return `/${lang}/blogs/${blogIdWithoutLang}`;
-  }
 
   static getCourseLink(courseId: string): string {
     const debug = false;
@@ -98,18 +89,6 @@ export class LinkUtil {
     }
 
     return LinkUtil.createUrl(`/${lang}/courses/${courseIdWithoutLang}`);
-  }
-
-  static getManualLink(manualId: string): string {
-    const debug = false;
-    const lang = manualId.split('/')[0];
-    const manualIdWithoutLang = manualId.replace(`${lang}/`, '');
-
-    if (debug) {
-      cosyLogger.info(`获取手册文档链接，手册文档ID: ${manualId}`);
-    }
-
-    return LinkUtil.createUrl(`/${lang}/manuals/${manualIdWithoutLang}`);
   }
 
   static getMetaLink(lang: string, slug: string): string {
