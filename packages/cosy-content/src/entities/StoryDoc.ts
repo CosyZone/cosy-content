@@ -271,4 +271,73 @@ export class StoryDoc extends BaseDoc implements SidebarProvider {
 
         return sidebarItem;
     }
+
+    /**
+     * 获取当前文档的上一个文档
+     * 
+     * @returns 返回上一个文档，如果没有则返回 null
+     */
+    async getPreviousDoc(): Promise<StoryDoc | null> {
+        const parentId = this.getParentId();
+        if (!parentId) {
+            return null;
+        }
+
+        const parent = await storyRepo.find(parentId);
+        if (!parent) {
+            return null;
+        }
+
+        const siblings = await parent.getChildren();
+        const currentIndex = siblings.findIndex(sibling => sibling.getId() === this.getId());
+
+        if (currentIndex <= 0) {
+            return null;
+        }
+
+        return siblings[currentIndex - 1];
+    }
+
+    /**
+     * 获取当前文档的下一个文档
+     * 
+     * @returns 返回下一个文档，如果没有则返回 null
+     */
+    async getNextDoc(): Promise<StoryDoc | null> {
+        const parentId = this.getParentId();
+        if (!parentId) {
+            return null;
+        }
+
+        const parent = await storyRepo.find(parentId);
+        if (!parent) {
+            return null;
+        }
+
+        const siblings = await parent.getChildren();
+        const currentIndex = siblings.findIndex(sibling => sibling.getId() === this.getId());
+
+        if (currentIndex === -1 || currentIndex >= siblings.length - 1) {
+            return null;
+        }
+
+        return siblings[currentIndex + 1];
+    }
+
+    /**
+     * 获取当前文档的导航信息（上一个和下一个）
+     * 
+     * @returns 返回包含上一个和下一个文档的对象
+     */
+    async getNavigation(): Promise<{
+        previous: StoryDoc | null;
+        next: StoryDoc | null;
+    }> {
+        const [previous, next] = await Promise.all([
+            this.getPreviousDoc(),
+            this.getNextDoc()
+        ]);
+
+        return { previous, next };
+    }
 } 

@@ -1,6 +1,11 @@
 ---
 import AppLayout from '@/layouts/AppLayout.astro';
-import { Error404, defaultLogger, type ISidebarItem } from '@coffic/cosy-ui';
+import {
+  Error404,
+  defaultLogger,
+  type ISidebarItem,
+  Link,
+} from '@coffic/cosy-ui';
 import { storyRepo } from '@coffic/cosy-content';
 import type { RenderResult } from 'astro:content';
 
@@ -9,6 +14,7 @@ const doc = await storyRepo.find(`${lang}/${slug}`);
 let title = '';
 let renderResult: RenderResult | null = null;
 let sidebarItems: ISidebarItem | null = null;
+let navigation: { previous: any; next: any } | null = null;
 
 if (doc) {
   title = doc.getTitle();
@@ -19,6 +25,9 @@ if (doc) {
   if (topDoc) {
     sidebarItems = await topDoc.toSidebarItem();
   }
+
+  // 获取导航信息
+  navigation = await doc.getNavigation();
 } else {
   title = '404 Not Found';
 }
@@ -51,6 +60,77 @@ export const getStaticPaths = async () => {
     renderResult ? (
       <>
         <renderResult.Content />
+
+        {/* 导航组件 */}
+        {navigation && (navigation.previous || navigation.next) && (
+          <nav class="navigation mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between items-center">
+              {/* 上一个 */}
+              {navigation.previous ? (
+                <Link
+                  href={navigation.previous.getLink()}
+                  variant="text"
+                  size="sm"
+                  class="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                  <svg
+                    class="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  <span>
+                    <span class="block text-xs text-gray-500 dark:text-gray-500">
+                      上一个
+                    </span>
+                    <span class="font-medium">
+                      {navigation.previous.getTitle()}
+                    </span>
+                  </span>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {/* 下一个 */}
+              {navigation.next ? (
+                <Link
+                  href={navigation.next.getLink()}
+                  variant="text"
+                  size="sm"
+                  class="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                  <span>
+                    <span class="block text-xs text-gray-500 dark:text-gray-500">
+                      下一个
+                    </span>
+                    <span class="font-medium">
+                      {navigation.next.getTitle()}
+                    </span>
+                  </span>
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              ) : (
+                <div />
+              )}
+            </div>
+          </nav>
+        )}
       </>
     ) : (
       <Error404 debugKVs={{ slug }} />
