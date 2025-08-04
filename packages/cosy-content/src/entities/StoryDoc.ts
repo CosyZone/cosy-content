@@ -128,7 +128,27 @@ export class StoryDoc extends BaseDoc implements SidebarProvider {
     async getChildren(): Promise<StoryDoc[]> {
         const debug = false;
         const children = (await storyRepo.getChildren(this.entry.id)).sort(
-            (a, b) => a.getOrder() - b.getOrder()
+            (a, b) => {
+                // 优先使用 order 值进行排序
+                const orderA = a.getOrder();
+                const orderB = b.getOrder();
+
+                // 如果两个都有 order 值，按 order 排序
+                if (orderA !== 0 && orderB !== 0) {
+                    return orderA - orderB;
+                }
+
+                // 如果只有一个有 order 值，有 order 的排在前面
+                if (orderA !== 0 && orderB === 0) {
+                    return -1;
+                }
+                if (orderA === 0 && orderB !== 0) {
+                    return 1;
+                }
+
+                // 如果都没有 order 值，按 id 排序
+                return a.getId().localeCompare(b.getId());
+            }
         );
         if (debug && children.length > 0) {
             cosyLogger.array(
