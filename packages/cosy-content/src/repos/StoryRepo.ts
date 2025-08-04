@@ -50,9 +50,33 @@ class StoryRepo extends BaseDB<
      * @returns 返回指定语言的顶级故事数组
      */
     async allStoriesByLang(lang: string): Promise<StoryDoc[]> {
-        return (await getCollection(COLLECTION_STORY, ({ id }: { id: string }) => {
+        const entries = (await getCollection(COLLECTION_STORY, ({ id }: { id: string }) => {
             return id.startsWith(lang) && id.split('/').length === 2;
-        })).map((entry: StoryEntry) => new StoryDoc(entry));
+        }))
+
+        return entries
+            .map((entry: StoryEntry) => new StoryDoc(entry))
+            .sort((a: StoryDoc, b: StoryDoc) => {
+                // 优先使用 order 值进行排序
+                const orderA = a.getOrder();
+                const orderB = b.getOrder();
+
+                // 如果两个都有 order 值，按 order 排序
+                if (orderA !== 0 && orderB !== 0) {
+                    return orderA - orderB;
+                }
+
+                // 如果只有一个有 order 值，有 order 的排在前面
+                if (orderA !== 0 && orderB === 0) {
+                    return -1;
+                }
+                if (orderA === 0 && orderB !== 0) {
+                    return 1;
+                }
+
+                // 如果都没有 order 值，按 id 排序
+                return a.getId().localeCompare(b.getId());
+            });
     }
 
     /**
