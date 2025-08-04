@@ -26,6 +26,10 @@ export const AppConfig = {
                 title: '课程',
             },
             {
+                href: LinkConfig.getStoriesLink(lang),
+                title: '故事',
+            },
+            {
                 href: LinkConfig.getLessonsLink(lang),
                 title: 'Build Your Own X',
             },

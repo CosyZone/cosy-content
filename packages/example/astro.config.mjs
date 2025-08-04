@@ -11,6 +11,11 @@ import vue from '@astrojs/vue';
 export default defineConfig({
   adapter: node({ mode: 'standalone' }),
 
+  i18n: {
+    defaultLocale: 'zh-cn',
+    locales: ['zh-cn', 'en'],
+  },
+
   vite: {
     resolve: {
       alias: {

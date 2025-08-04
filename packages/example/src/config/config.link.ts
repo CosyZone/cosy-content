@@ -40,6 +40,10 @@ export default class LinkConfig {
         return `/${lang}/courses`;
     }
 
+    static getStoriesLink(lang: string): string {
+        return `/${lang}/stories`;
+    }
+
     static getBlogsLink(lang: string): string {
         return `/${lang}/blogs`;
     }
