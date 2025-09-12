@@ -41,6 +41,10 @@ export const AppConfig = {
                 href: LinkConfig.getManualsLink(lang),
                 title: lang === 'zh-cn' ? '手册' : 'Manuals',
             },
+            {
+                href: LinkConfig.getProductsLink(lang),
+                title: lang === 'zh-cn' ? '产品' : 'Products',
+            },
         ]
     },
 

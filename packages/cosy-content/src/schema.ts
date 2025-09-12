@@ -147,3 +147,24 @@ export const makeStoryCollection = (base: string) => {
         }),
     });
 };
+
+export const makeProductCollection = (base: string) => {
+    return defineCollection({
+        loader: glob({
+            pattern: '**/*.{md,mdx}',
+            base,
+        }),
+        schema: z.object({
+            title: z.string(),
+            description: z.string().optional(),
+            price: z.number().optional(),
+            tags: z.array(z.string()).optional(),
+            category: z.string().optional(),
+            badge: z.string().optional(),
+            date: z.date().optional(),
+            draft: z.boolean().optional(),
+            hidden: z.boolean().optional(),
+            famous: z.boolean().optional(),
+        }),
+    });
+};

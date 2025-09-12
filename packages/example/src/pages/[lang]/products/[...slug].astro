@@ -1,0 +1,32 @@
+---
+import AppLayout from '@/layouts/AppLayout.astro';
+import { Container } from '@coffic/cosy-ui';
+import { productRepo } from '@coffic/cosy-content';
+
+export const prerender = true;
+export async function getStaticPaths() {
+  return await productRepo.getStaticPaths();
+}
+
+let { lang, slug } = Astro.params;
+const id = `${lang}/${slug}`;
+const doc = await productRepo.find(id);
+
+if (!doc) {
+  return Astro.redirect(404);
+}
+
+const { Content } = await doc.render();
+---
+
+<AppLayout
+  title={doc.getTitle()}
+  isArticle={true}
+  verticalPadding="2xl"
+  description={doc.getDescription?.()}
+  layout="row"
+  showTableOfContents={true}>
+  <Container padding="xl" size="full">
+    <Content />
+  </Container>
+</AppLayout>

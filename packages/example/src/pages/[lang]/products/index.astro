@@ -1,0 +1,63 @@
+---
+import AppLayout from '@/layouts/AppLayout.astro';
+import { Container, Grid, Link } from '@coffic/cosy-ui';
+import { productRepo } from '@coffic/cosy-content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return [{ params: { lang: '/zh-cn' } }, { params: { lang: '/en' } }];
+}
+
+const { lang } = Astro.params;
+const products = await productRepo.allProductsByLang(lang as string);
+
+// 为每个产品获取封面渲染结果
+const productsWithCover = await Promise.all(
+  products.map(async (product) => {
+    const coverResult = await product.renderCover();
+    return {
+      ...product,
+      coverResult,
+      getTitle: product.getTitle.bind(product),
+      getLink: product.getLink.bind(product),
+      getDescription: product.getDescription.bind(product),
+    };
+  })
+);
+
+const title = lang === 'zh-cn' ? '产品列表' : 'Products List';
+const description = lang === 'zh-cn' ? '产品列表' : 'Products List';
+---
+
+<AppLayout
+  title={title}
+  description={description}
+  showSidebar={false}
+  verticalPadding="4xl">
+  <Container size="xl">
+    <Grid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} gap="lg">
+      {
+        productsWithCover.map((product) => (
+          <Link href={product.getLink()} class="relative group">
+            <Container flex="col">
+              {product.coverResult ? (
+                <product.coverResult.Content />
+              ) : (
+                <div class="w-full h-52 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                  <span class="text-gray-500">{product.getTitle()}</span>
+                </div>
+              )}
+
+              <div class="absolute bottom-3 left-4 z-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-lg shadow-lg transform -translate-y-1 hover:-translate-y-2 transition-transform duration-200 group-hover:shadow-xl">
+                <h3 class="text-sm font-semibold whitespace-nowrap">
+                  {product.getTitle()}
+                </h3>
+              </div>
+            </Container>
+          </Link>
+        ))
+      }
+    </Grid>
+  </Container>
+</AppLayout>
