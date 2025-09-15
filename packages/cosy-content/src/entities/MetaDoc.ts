@@ -4,6 +4,7 @@ import { metaRepo } from '../repos/MetaRepo.js';
 import { SidebarItemEntity, type SidebarProvider } from './SidebarItem.js';
 import { cosyLogger } from '../cosy.js';
 import { BaseDoc } from './BaseDoc.js';
+import { getText } from '../utils/i18n.js';
 
 export class MetaDoc extends BaseDoc implements SidebarProvider {
   entry: MetaEntry;
@@ -120,8 +121,11 @@ export class MetaDoc extends BaseDoc implements SidebarProvider {
   }
 
   async getTopSidebarItem(): Promise<SidebarItemEntity> {
+    const lang = this.getLang();
+    const text = getText(lang, 'meta', 'aboutUs');
+
     return new SidebarItemEntity({
-      text: '了解我们',
+      text,
       items: await this.getSiblingSidebarItems(),
       link: '',
     });

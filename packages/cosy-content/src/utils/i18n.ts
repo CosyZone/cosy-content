@@ -28,6 +28,9 @@ export const texts: Record<string, TextContent> = {
             allRightsReserved: 'All Rights Reserved',
             friendlyLinks: 'Friendly Links',
         },
+        meta: {
+            aboutUs: 'About Us',
+        },
     },
     'zh-cn': {
         tableOfContents: {
@@ -53,6 +56,9 @@ export const texts: Record<string, TextContent> = {
             privacy: '隐私政策',
             allRightsReserved: '保留所有权利',
             friendlyLinks: '友情链接',
+        },
+        meta: {
+            aboutUs: '了解我们',
         },
     },
 };
