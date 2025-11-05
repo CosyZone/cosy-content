@@ -6,9 +6,10 @@
 
 ## 功能特性
 
-- **多种内容类型支持**：博客、课程、实验、课程、手册等
+- **多种内容类型支持**：博客、课程、实验、故事、手册等
 - **多语言支持**：内置中文和英文支持
 - **类型安全**：完整的 TypeScript 类型定义
+- **Schema 扩展**：支持自定义字段，保持类型安全
 - **灵活的内容管理**：支持层级结构、标签、分类等
 - **SEO 友好**：内置 SEO 优化功能
 - **易于扩展**：模块化设计，易于添加新的内容类型
@@ -35,14 +36,19 @@
 
 适合展示成体系的文档，如产品用户手册、技术框架文档等。每个仓库只有一个完整的手册，按章节组织。
 
+### StoryDoc - 故事文档
+
+适合绘本、故事等内容，支持多级章节结构和自定义字段扩展。
+
 ## 目录结构
 
-```
+```text
 content/
 ├── blogs/          # 博客文章
 ├── courses/        # 课程内容
 ├── lessons/        # 课程教程
 ├── experiments/    # 实验记录
+├── stories/        # 故事内容
 ├── manuals/        # 手册文档
 └── meta/           # 元数据
 ```
@@ -58,13 +64,16 @@ npm install @coffic/cosy-content
 ### 基本使用
 
 ```typescript
-import { blogRepo, courseRepo, manualRepo } from '@coffic/cosy-content';
+import { blogRepo, courseRepo, storyRepo, manualRepo } from '@coffic/cosy-content';
 
 // 获取博客文章
 const blogs = await blogRepo.allBlogsByLang('zh-cn');
 
 // 获取课程内容
 const courses = await courseRepo.allCoursesByLang('zh-cn');
+
+// 获取故事内容
+const stories = await storyRepo.allStoriesByLang('zh-cn');
 
 // 获取手册内容
 const manuals = await manualRepo.allManualsByLang('zh-cn');
@@ -84,6 +93,12 @@ const manuals = await manualRepo.allManualsByLang('zh-cn');
 - `getFamousCourses(lang: string, count?: number)` - 获取精选课程
 - `getCoursesWithTag(lang: string, tag: string)` - 根据标签获取课程
 
+### StoryRepo
+
+- `allStoriesByLang(lang: string)` - 获取指定语言的所有故事
+- `getFamousStories(lang: string, count?: number)` - 获取精选故事
+- `getStoriesWithTag(lang: string, tag: string)` - 根据标签获取故事
+
 ### ManualRepo
 
 - `allManualsByLang(lang: string)` - 获取指定语言的所有手册章节
@@ -100,13 +115,40 @@ const manuals = await manualRepo.allManualsByLang('zh-cn');
 import {
   makeBlogCollection,
   makeCourseCollection,
+  makeStoryCollection,
   makeManualCollection,
 } from '@coffic/cosy-content/schema';
 
 export const collections = {
   blogs: makeBlogCollection('./content/blogs'),
   courses: makeCourseCollection('./content/courses'),
+  stories: makeStoryCollection('./content/stories'),
   manuals: makeManualCollection('./content/manuals'),
+};
+```
+
+### Schema 扩展
+
+支持为任何集合添加自定义字段：
+
+```typescript
+import { z } from 'astro:content';
+import { makeStoryCollection } from '@coffic/cosy-content/schema';
+
+export const collections = {
+  stories: makeStoryCollection('./content/stories', {
+    // 自定义字段
+    background: z.string().optional(),
+    pageAspectRatio: z.number().optional(),
+    textBoxes: z.array(z.object({
+      slot: z.string(),
+      top: z.number(),
+      left: z.number(),
+      width: z.number(),
+      bg: z.string(),
+      content: z.string(),
+    })).optional(),
+  }),
 };
 ```
 

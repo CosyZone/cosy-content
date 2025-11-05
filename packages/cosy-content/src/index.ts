@@ -18,3 +18,6 @@ export * from './entities/MetaDoc.js';
 export * from './entities/Tag.js';
 export * from './entities/StoryDoc.js';
 export * from './entities/ProductDoc.js';
+
+// 导出 schema 相关内容
+export * from './schema.js';
