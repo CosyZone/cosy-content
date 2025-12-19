@@ -90,4 +90,4 @@ jobs:
       - name: Publish to npm
         run: |
           cd packages/cosy-content
-          pnpm publish --no-git-checks --access public
+          npm publish --no-git-checks --access public
