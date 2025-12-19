@@ -1,90 +1,44 @@
-name: Publish Cosy Content
+name: 📦 Publish to npm
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - npm
+
+    workflow_run:
+        workflows:
+            - "📦 Release Cosy UI"
+        types:
+            - completed
 
 permissions:
-  id-token: write # Required for OIDC
-  contents: read
+    id-token: write # Required for OIDC
+    contents: read
 
 jobs:
-  build-and-publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Update npm to latest version
-        run: npm install -g npm@latest
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Build
-        run: pnpm build:content
-
-      - name: Bump version
-        id: version
-        run: |
-          cd packages/cosy-content
-          # 获取当前版本号
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          # 直接用Node.js脚本修改版本号
-          NEW_VERSION=$(node -e "
-            const fs = require('fs');
-            const pkg = require('./package.json');
-            const [major, minor, patch] = pkg.version.split('.').map(Number);
-            pkg.version = \`\${major}.\${minor}.\${patch + 1}\`;
-            fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\\n');
-            console.log(pkg.version);
-          ")
-          # 设置输出变量
-          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
-          echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
-
-      - name: Commit changes
-        run: |
-          cd packages/cosy-content
-          git pull
-          git add package.json
-          git commit -m "🎨 Chore: bump version to ${{ steps.version.outputs.new_version }}"
-          git tag "v${{ steps.version.outputs.new_version }}"
-          git push
-          git push --tags
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: "v${{ steps.version.outputs.new_version }}"
-          name: "v${{ steps.version.outputs.new_version }}"
-          body: |
-            ## @coffic/cosy-content v${{ steps.version.outputs.new_version }}
-
-            从 v${{ steps.version.outputs.current_version }} 升级到 v${{ steps.version.outputs.new_version }}
-
-            ### 变更内容
-            - 自动发布新版本
-            - 包含最新的代码变更
-          draft: false
-          prerelease: false
-
-      - name: Publish to npm
-        run: |
-          cd packages/cosy-content
-          npm publish --no-git-checks --access public
+    publish:
+        runs-on: ubuntu-latest
+        if: |
+            github.event.workflow_run.conclusion == 'success' &&
+            github.event.workflow_run.head_branch == 'main'
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "23"
+            - name: Setup PNPM
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 10
+            - name: Update npm to latest version
+              run: npm install -g npm@latest
+            - name: Publish Package
+              run: |
+                  cd packages/cosy-content
+                  echo "Current package version:"
+                  cat package.json | grep version
+                  echo "Current npm version:"
+                  npm view @coffic/cosy-content version
+                  pnpm i
+                  pnpm build
+                  npm publish --access public --no-git-checks

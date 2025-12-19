@@ -1,0 +1,99 @@
+---
+name: 📦 Release
+
+on:
+  push:
+    branches:
+      - main # 正式发布分支
+    tags:
+      - "*"
+
+# 添加工作流级别的权限
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write
+  statuses: write
+  checks: write
+  id-token: write
+
+env:
+  tag: ${{ github.event.head_commit.id }}
+  version: ${{ github.ref_name }}
+  is_prerelease: ${{ github.ref == 'refs/heads/pre' }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23"
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Build
+        run: pnpm build:content
+
+      - name: Bump version
+        id: version
+        run: |
+          cd packages/cosy-content
+          # 获取当前版本号
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          # 直接用Node.js脚本修改版本号
+          NEW_VERSION=$(node -e "
+            const fs = require('fs');
+            const pkg = require('./package.json');
+            const [major, minor, patch] = pkg.version.split('.').map(Number);
+            pkg.version = \`\${major}.\${minor}.\${patch + 1}\`;
+            fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\\n');
+            console.log(pkg.version);
+          ")
+          # 设置输出变量
+          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+          echo "current_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        run: |
+          cd packages/cosy-content
+          git pull
+          git add package.json
+          git commit -m "🎨 Chore: bump version to ${{ steps.version.outputs.new_version }}"
+          git tag "v${{ steps.version.outputs.new_version }}"
+          git push
+          git push --tags
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v${{ steps.version.outputs.new_version }}"
+          name: "v${{ steps.version.outputs.new_version }}"
+          body: |
+            ## @coffic/cosy-content v${{ steps.version.outputs.new_version }}
+
+            从 v${{ steps.version.outputs.current_version }} 升级到 v${{ steps.version.outputs.new_version }}
+
+            ### 变更内容
+            - 自动发布新版本
+            - 包含最新的代码变更
+          draft: false
+          prerelease: false

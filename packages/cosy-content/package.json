@@ -17,7 +17,7 @@
     "astro",
     "cosy-ui"
   ],
-  "homepage": "https://ui.coffic.cn",
+  "homepage": "https://ui.coffic.cn/en",
   "publishConfig": {
     "access": "public"
   },
