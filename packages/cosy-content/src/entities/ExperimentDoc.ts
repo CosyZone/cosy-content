@@ -6,6 +6,26 @@ import { LinkUtil } from '../utils/link.js';
 import type { IHeadingType } from '../types/heading.js';
 import { BaseDoc } from './BaseDoc.js';
 
+/**
+ * 实验文档类，配合 ExperimentRepo 使用
+ *
+ * 目录结构：
+ * ```
+ * experiments/
+ * ├── safari_itp/              # 实验1
+ * │   ├── en/                  # 英文版本
+ * │   │   ├── index.mdx        # 实验文档
+ * │   │   ├── 1.mdx
+ * │   │   ├── 2.mdx
+ * │   │   └── 3.mdx
+ * │   └── zh-cn/               # 中文版本
+ * │       ├── index.mdx
+ * │       ├── 1.mdx
+ * │       ├── 2.mdx
+ * │       └── 3.mdx
+ * └── ...                      # 其他实验
+ * ```
+ */
 export class ExperimentDoc extends BaseDoc implements SidebarProvider {
   entry: ExperimentEntry;
 
@@ -77,7 +97,10 @@ export class ExperimentDoc extends BaseDoc implements SidebarProvider {
   }
 
   getSlug(): string {
-    return this.getId().split('/').slice(1).join('/');
+    const parts = this.getId().split('/');
+    // 对于 experiments，ID 格式是 circle-math-tour/zh-cn 或 circle-math-tour/zh-cn/1
+    // lang 在 parts[1]，slug 应该是去掉 lang 后的部分（parts[0] + parts.slice(2)）
+    return [parts[0], ...parts.slice(2)].filter(Boolean).join('/');
   }
 
   getDescription(): string {
