@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - ".github/workflows/publish-content.yaml"
-      - "packages/cosy-content/**"
 
 permissions:
   id-token: write # Required for OIDC
