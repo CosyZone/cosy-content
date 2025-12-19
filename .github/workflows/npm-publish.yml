@@ -7,7 +7,7 @@ on:
 
     workflow_run:
         workflows:
-            - "📦 Release Cosy UI"
+            - "📦 Release"
         types:
             - completed
 

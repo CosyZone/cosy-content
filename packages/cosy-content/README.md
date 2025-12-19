@@ -30,7 +30,7 @@
 
 ### ExperimentDoc - 实验文档
 
-适合记录技术实验和探索，支持实验过程和结果展示。
+适合记录技术实验和探索，支持实验过程和结果展示。支持草稿（draft）、隐藏（hidden）、徽章（badge）、排序（order）、标签（tags）等属性，与课程文档具有相同的属性支持。
 
 ### ManualDoc - 手册文档
 
@@ -64,13 +64,16 @@ npm install @coffic/cosy-content
 ### 基本使用
 
 ```typescript
-import { blogRepo, courseRepo, storyRepo, manualRepo } from '@coffic/cosy-content';
+import { blogRepo, courseRepo, experimentRepo, storyRepo, manualRepo } from '@coffic/cosy-content';
 
 // 获取博客文章
 const blogs = await blogRepo.allBlogsByLang('zh-cn');
 
 // 获取课程内容
 const courses = await courseRepo.allCoursesByLang('zh-cn');
+
+// 获取实验内容
+const experiments = await experimentRepo.allExperiments('zh-cn');
 
 // 获取故事内容
 const stories = await storyRepo.allStoriesByLang('zh-cn');
@@ -92,6 +95,27 @@ const manuals = await manualRepo.allManualsByLang('zh-cn');
 - `allCoursesByLang(lang: string)` - 获取指定语言的所有课程
 - `getFamousCourses(lang: string, count?: number)` - 获取精选课程
 - `getCoursesWithTag(lang: string, tag: string)` - 根据标签获取课程
+
+### ExperimentRepo
+
+- `allExperiments(lang: string)` - 获取指定语言的所有实验
+- `find(id: string)` - 根据 ID 查找单个实验文档
+- `getChildren(id: string)` - 获取指定实验的子文档（按 order 排序）
+
+### ExperimentDoc
+
+实验文档类提供以下方法：
+
+- `getOrder()` - 获取排序值
+- `getBadge()` - 获取徽章文本
+- `getTags()` - 获取标签数组
+- `isDraft()` - 判断是否为草稿
+- `isHidden()` - 判断是否隐藏
+- `isNotHidden()` - 判断是否不隐藏
+- `hasTag(tag: string)` - 判断是否包含某个标签
+- `hasBadge()` - 判断是否有徽章
+- `getChildren()` - 获取子文档（按 order 排序，自动过滤 hidden 项）
+- `toSidebarItem()` - 转换为侧边栏项（支持 badge 显示）
 
 ### StoryRepo
 
@@ -115,6 +139,7 @@ const manuals = await manualRepo.allManualsByLang('zh-cn');
 import {
   makeBlogCollection,
   makeCourseCollection,
+  makeExperimentCollection,
   makeStoryCollection,
   makeManualCollection,
 } from '@coffic/cosy-content/schema';
@@ -122,6 +147,7 @@ import {
 export const collections = {
   blogs: makeBlogCollection('./content/blogs'),
   courses: makeCourseCollection('./content/courses'),
+  experiments: makeExperimentCollection('./content/experiments'),
   stories: makeStoryCollection('./content/stories'),
   manuals: makeManualCollection('./content/manuals'),
 };
