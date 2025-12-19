@@ -104,6 +104,11 @@ export const experimentBaseSchema = z.object({
     title: z.string().optional(),
     description: z.string().optional(),
     pubDate: z.date().optional(),
+    order: z.number().optional(),
+    badge: z.string().optional(),
+    draft: z.boolean().optional(),
+    hidden: z.boolean().optional(),
+    tags: z.array(z.string()).optional(),
 });
 
 export const makeMetaCollection = (base: string, customFields?: z.ZodRawShape) => {

@@ -145,7 +145,40 @@ export class ExperimentDoc extends BaseDoc implements SidebarProvider {
   }
 
   async getChildren(): Promise<ExperimentDoc[]> {
-    return await experimentRepo.getChildren(this.entry.id);
+    const children = await experimentRepo.getChildren(this.entry.id);
+    return children.sort((a, b) => a.getOrder() - b.getOrder());
+  }
+
+  getOrder(): number {
+    return this.entry.data.order ?? 0;
+  }
+
+  getBadge(): string {
+    return this.entry.data.badge ?? '';
+  }
+
+  getTags(): string[] {
+    return this.entry.data.tags ?? [];
+  }
+
+  isDraft(): boolean {
+    return this.entry.data.draft ?? false;
+  }
+
+  isHidden(): boolean {
+    return this.entry.data.hidden ?? false;
+  }
+
+  isNotHidden(): boolean {
+    return !this.isHidden();
+  }
+
+  hasTag(tag: string): boolean {
+    return this.getTags().includes(tag);
+  }
+
+  hasBadge(): boolean {
+    return this.getBadge() !== '';
   }
 
   async getDescendants(): Promise<ExperimentDoc[]> {
@@ -156,7 +189,9 @@ export class ExperimentDoc extends BaseDoc implements SidebarProvider {
     const debug = false;
     const children = await this.getChildren();
     let childItems = await Promise.all(
-      children.map((child) => child.toSidebarItem())
+      children
+        .filter((child) => child.isNotHidden())
+        .map((child) => child.toSidebarItem())
     );
     if (this.isBook()) {
       childItems = [...childItems];
@@ -169,6 +204,7 @@ export class ExperimentDoc extends BaseDoc implements SidebarProvider {
       text: this.getTitle(),
       items: childItems,
       link: this.getLink(),
+      badge: this.entry.data.badge,
     });
   }
 
