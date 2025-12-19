@@ -5,8 +5,12 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/publish-content.yaml'
-      - 'packages/cosy-content/**'
+      - ".github/workflows/publish-content.yaml"
+      - "packages/cosy-content/**"
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
 
 jobs:
   build-and-publish:
@@ -21,8 +25,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -73,8 +77,8 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: 'v${{ steps.version.outputs.new_version }}'
-          name: 'cosy-content v${{ steps.version.outputs.new_version }}'
+          tag_name: "v${{ steps.version.outputs.new_version }}"
+          name: "v${{ steps.version.outputs.new_version }}"
           body: |
             ## @coffic/cosy-content v${{ steps.version.outputs.new_version }}
 
@@ -90,5 +94,3 @@ jobs:
         run: |
           cd packages/cosy-content
           pnpm publish --no-git-checks --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
